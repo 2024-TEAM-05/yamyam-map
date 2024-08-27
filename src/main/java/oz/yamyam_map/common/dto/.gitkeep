@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: integrated-feed-backend
+
+  datasource:
+    url: database-url
+    username: database-user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    tags-sorter: alpha
+    operations-sorter: method
+
+jwt:
+  secret: ${JWT_SECRET}   # secret key, 만료 시간 환경 변수로 관리
+  token-validity-in-seconds: ${JWT_EXPIRATION}
