@@ -1,7 +1,7 @@
 package oz.yamyam_map.exception.custom;
 
 import lombok.Getter;
-import team05.integrated_feed_backend.common.code.StatusCode;
+import oz.yamyam_map.common.code.StatusCode;
 
 /**
  * 요청 결과가 없는 경우

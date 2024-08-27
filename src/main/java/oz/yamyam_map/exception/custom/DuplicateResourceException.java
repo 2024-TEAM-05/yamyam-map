@@ -1,7 +1,7 @@
 package oz.yamyam_map.exception.custom;
 
 import lombok.Getter;
-import team05.integrated_feed_backend.common.code.StatusCode;
+import oz.yamyam_map.common.code.StatusCode;
 
 /**
  * 생성하고자 요청하는 데이터가 이미 있는 경우
