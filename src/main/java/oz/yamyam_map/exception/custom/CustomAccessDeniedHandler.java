@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import oz.yamyam_map.common.BaseApiResponse;
+import oz.yamyam_map.common.ApiResponse;
 import oz.yamyam_map.common.code.StatusCode;
 
 @Slf4j
@@ -26,9 +26,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
 		// StatusCode.FORBIDDEN을 사용하여 응답 생성
 		StatusCode statusCode = StatusCode.FORBIDDEN;
-		BaseApiResponse<Void> apiResponse = BaseApiResponse.of(statusCode);
+		ApiResponse<Void> apiResponse = ApiResponse.of(statusCode);
 
-		ResponseEntity<BaseApiResponse<Void>> entity = new ResponseEntity<>(apiResponse, statusCode.getHttpStatus());
+		ResponseEntity<ApiResponse<Void>> entity = new ResponseEntity<>(apiResponse, statusCode.getHttpStatus());
 
 		response.setStatus(entity.getStatusCodeValue());
 		response.setContentType("application/json");
