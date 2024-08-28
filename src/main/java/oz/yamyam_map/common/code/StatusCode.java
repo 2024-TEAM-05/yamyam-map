@@ -26,12 +26,8 @@ public enum StatusCode {
 	PASSWORD_HAS_REPEATING_CHARACTER(HttpStatus.BAD_REQUEST, "비밀번호에 3회 이상 연속되는 문자 사용이 불가합니다."),
 	DUPLICATE_ACCOUNT(HttpStatus.CONFLICT, "이미 사용 중인 계정입니다."),
 	DUPLICATE_EMAIL(HttpStatus.CONFLICT, "이미 사용 중인 이메일입니다."),
-	POST_NOT_EXIST(HttpStatus.NOT_FOUND, "존재하지 않는 게시물입니다."),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "요청된 사용자를 찾을 수 없습니다."),
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 오류가 발생했습니다."),
-	NOT_SUPPORTED_STATISTICS_TYPE(HttpStatus.BAD_REQUEST, "type을 다시 설정해주세요. date와 hour이 가능합니다."),
-	EXCEEDED_STATISTICS_DATE_RANGE(HttpStatus.BAD_REQUEST, "조회 가능 기간을 초과했습니다. 조회 시간을 다시 설정해주세요"),
-	INVALID_STATISTICS_DATE(HttpStatus.BAD_REQUEST, "조회 시작 일자는 조회 종료 일자보다 이전이어야 합니다."),
 	FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
 	/**
