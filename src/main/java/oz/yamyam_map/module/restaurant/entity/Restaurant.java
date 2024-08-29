@@ -41,9 +41,9 @@ public class Restaurant extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "GEOMETRY")
 	private Point location;
 
-	private String OldAressFull;
+	private String OldAddressFull;
 
-	private String RoadAdressFull;
+	private String RoadAddressFull;
 
 	@Embedded
 	private ReviewRating reviewRating; // 리뷰 평점 데이터를 위한 VO
