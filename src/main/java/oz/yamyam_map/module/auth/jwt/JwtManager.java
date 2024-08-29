@@ -78,10 +78,13 @@ public class JwtManager {
 	// jjwt : parser() 메서드가 parserBuilder()로 대체됨
 	// JWT 토큰에서 memberId 추출 (Body: 페이로드)
 	public Long getMemberId(String token) {
+
+		String bearerToken = token.substring(7);
+
 		return Long.parseLong(Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()
-			.parseClaimsJws(token)
+			.parseClaimsJws(bearerToken)
 			.getBody()
 			.getSubject());
 	}
