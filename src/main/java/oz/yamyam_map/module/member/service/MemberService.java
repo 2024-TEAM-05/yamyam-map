@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import oz.yamyam_map.exception.custom.DataNotFoundException;
 import oz.yamyam_map.exception.custom.DuplicateResourceException;
 import oz.yamyam_map.module.auth.jwt.JwtManager;
-import oz.yamyam_map.module.member.dto.MemberSignupReq;
+import oz.yamyam_map.module.member.dto.request.MemberSignupReq;
+import oz.yamyam_map.module.member.dto.response.MemberDetailRes;
 import oz.yamyam_map.module.member.entity.Member;
 import oz.yamyam_map.module.member.repository.MemberRepository;
 
@@ -36,6 +38,17 @@ public class MemberService {
 		if (memberRepository.existsByAccount(account)) {
 			throw new DuplicateResourceException(DUPLICATE_ACCOUNT);
 		}
+	}
+
+	public MemberDetailRes getMemberDetail(String token) {
+
+		Long memberId = jwtManager.getMemberId(token);
+
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new DataNotFoundException(USER_NOT_FOUND));
+
+		return MemberDetailRes.fromEntity(member);
+
 	}
 
 }
