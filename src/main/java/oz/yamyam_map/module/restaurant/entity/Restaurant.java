@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import oz.yamyam_map.common.enums.RestaurantBusinessType;
+import oz.yamyam_map.common.enums.RestaurantType;
 
 @Entity
 @Getter
@@ -32,15 +32,15 @@ public class Restaurant {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private RestaurantBusinessType businessType;
+	private RestaurantType businessType;
 
 	private String phoneNumber;
 
 	@Column(nullable = false, columnDefinition = "GEOMETRY")
 	private Point location;
 
-	private String NumberAddress;
+	private String OldAressFull;
 
-	private String RoadNameAddress;
+	private String RoadAdressFull;
 
 }
