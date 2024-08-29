@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oz.yamyam_map.common.ApiResponse;
+import oz.yamyam_map.common.BaseApiResponse;
 import oz.yamyam_map.common.code.StatusCode;
 import oz.yamyam_map.exception.custom.BadRequestException;
 import oz.yamyam_map.exception.custom.BusinessException;
@@ -52,10 +52,10 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(BAD_REQUEST)
 	@ExceptionHandler({BadRequestException.class})
-	public ApiResponse<Void> handleBadRequestException(BadRequestException e) {
+	public BaseApiResponse<Void> handleBadRequestException(BadRequestException e) {
 		log.warn(e.getMessage(), e);
 
-		return ApiResponse.of(getStatusCodeFromException(e));
+		return BaseApiResponse.of(getStatusCodeFromException(e));
 	}
 
 	/**
@@ -64,10 +64,10 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(CONFLICT)
 	@ExceptionHandler({DuplicateResourceException.class})
-	public ApiResponse<Void> handleDuplicateResourceException(DuplicateResourceException e) {
+	public BaseApiResponse<Void> handleDuplicateResourceException(DuplicateResourceException e) {
 		log.warn(e.getMessage(), e);
 
-		return ApiResponse.of(getStatusCodeFromException(e));
+		return BaseApiResponse.of(getStatusCodeFromException(e));
 	}
 
 	/**
@@ -76,10 +76,10 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(FORBIDDEN)
 	@ExceptionHandler({ForbiddenException.class})
-	public ApiResponse<Void> handleForbiddenException(ForbiddenException e) {
+	public BaseApiResponse<Void> handleForbiddenException(ForbiddenException e) {
 		log.warn(e.getMessage(), e);
 
-		return ApiResponse.of(getStatusCodeFromException(e));
+		return BaseApiResponse.of(getStatusCodeFromException(e));
 	}
 
 	/**
@@ -88,10 +88,10 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(NOT_FOUND)
 	@ExceptionHandler({DataNotFoundException.class})
-	public ApiResponse<Void> handleDataNotFoundException(DataNotFoundException e) {
+	public BaseApiResponse<Void> handleDataNotFoundException(DataNotFoundException e) {
 		log.warn(e.getMessage(), e);
 
-		return ApiResponse.of(getStatusCodeFromException(e));
+		return BaseApiResponse.of(getStatusCodeFromException(e));
 	}
 
 	/**
@@ -100,10 +100,10 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(BAD_REQUEST)
 	@ExceptionHandler({BusinessException.class})
-	public ApiResponse<Void> handleBusinessException(BusinessException e) {
+	public BaseApiResponse<Void> handleBusinessException(BusinessException e) {
 		log.warn(e.getMessage(), e);
 
-		return ApiResponse.of(getStatusCodeFromException(e));
+		return BaseApiResponse.of(getStatusCodeFromException(e));
 	}
 
 	/**
@@ -112,13 +112,13 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ApiResponse<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+	public BaseApiResponse<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		log.warn(e.getMessage(), e);
 
 		// validation 검사 실패 항목 보여주는 메세지
 		String errors = convertToErrorResponses(e);
 
-		return ApiResponse.of(BAD_REQUEST, errors);
+		return BaseApiResponse.of(BAD_REQUEST, errors);
 	}
 
 	/**
@@ -127,13 +127,13 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	public ApiResponse<Void> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+	public BaseApiResponse<Void> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
 		log.warn(e.getMessage(), e);
 
 		// 타입이 맞지 않은 메서드 인자 보여주는 메세지
 		String message = formatMessageFrom(e);
 
-		return ApiResponse.of(BAD_REQUEST, message);
+		return BaseApiResponse.of(BAD_REQUEST, message);
 	}
 
 	/**
@@ -142,13 +142,13 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(BAD_REQUEST)
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ApiResponse<Void> handleInvalidFormatException(InvalidFormatException e) {
+	public BaseApiResponse<Void> handleInvalidFormatException(InvalidFormatException e) {
 		log.warn(e.getMessage(), e);
 
 		// enum type 의 항목 보여주는 메세지
 		String message = formatMessageFrom(e);
 
-		return ApiResponse.of(BAD_REQUEST, message);
+		return BaseApiResponse.of(BAD_REQUEST, message);
 	}
 
 	/**
@@ -156,12 +156,12 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
-	public ApiResponse<Void> handleUnknownException(Exception e) {
+	public BaseApiResponse<Void> handleUnknownException(Exception e) {
 		log.error(e.getMessage(), e);
 
 		StatusCode statusCode = StatusCode.findStatusCodeByNameSafe(e.getMessage(), StatusCode.INTERNAL_SERVER_ERROR);
 
-		return ApiResponse.of(statusCode);
+		return BaseApiResponse.of(statusCode);
 	}
 
 	/**
@@ -170,10 +170,10 @@ public class GlobalExceptionHandler {
 	 **/
 	@ResponseStatus(UNAUTHORIZED)
 	@ExceptionHandler(UsernameNotFoundException.class)
-	public ApiResponse<Void> handleUsernameNotFoundException(UsernameNotFoundException e) {
+	public BaseApiResponse<Void> handleUsernameNotFoundException(UsernameNotFoundException e) {
 		log.warn(e.getMessage(), e);
 
-		return ApiResponse.of(StatusCode.UNAUTHORIZED);
+		return BaseApiResponse.of(StatusCode.UNAUTHORIZED);
 	}
 
 	/**

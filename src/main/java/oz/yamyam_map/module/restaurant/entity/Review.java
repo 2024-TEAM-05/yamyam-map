@@ -39,5 +39,14 @@ public class Review extends BaseEntity {
 
 	private String content;
 
+	public static Review of(Member member, Restaurant restaurant, Byte score, String content) {
+		return Review.builder()
+			.member(member)
+			.restaurant(restaurant)
+			.score(score)
+			.content(content)
+			.build();
+	}
+
 }
 
