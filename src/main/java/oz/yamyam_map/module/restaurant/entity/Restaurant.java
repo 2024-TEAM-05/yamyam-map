@@ -1,5 +1,6 @@
 package oz.yamyam_map.module.restaurant.entity;
 
+import jakarta.persistence.Embedded;
 import java.awt.*;
 
 import jakarta.persistence.Column;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import oz.yamyam_map.common.entity.BaseEntity;
 import oz.yamyam_map.common.enums.RestaurantType;
 
 @Entity
@@ -21,7 +23,7 @@ import oz.yamyam_map.common.enums.RestaurantType;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
-public class Restaurant {
+public class Restaurant extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +45,12 @@ public class Restaurant {
 
 	private String RoadAdressFull;
 
+	@Embedded
+	private ReviewRating reviewRating; // 리뷰 평점 데이터를 위한 VO
+
+	public void uploadReview(Byte newRating) {
+		ReviewRating newReviewRating = reviewRating.createNewReviewRating(newRating);
+		this.reviewRating = newReviewRating;
+
+	}
 }
