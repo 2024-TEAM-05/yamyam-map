@@ -1,4 +1,4 @@
-package oz.yamyam_map.module.member.dto;
+package oz.yamyam_map.module.member.dto.response;
 
 import lombok.Builder;
 import lombok.Value;
