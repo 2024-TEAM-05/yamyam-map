@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.extern.slf4j.Slf4j;
 import oz.yamyam_map.common.ApiResponse;
 import oz.yamyam_map.module.auth.dto.JwtResponse;
+import oz.yamyam_map.module.auth.dto.LoginRequest;
 import oz.yamyam_map.module.auth.jwt.JwtManager;
-import team05.integrated_feed_backend.module.auth.dto.LoginRequest;
 
 @Slf4j
 @RestController

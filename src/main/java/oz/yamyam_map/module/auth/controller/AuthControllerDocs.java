@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import oz.yamyam_map.module.auth.dto.JwtResponse;
-import team05.integrated_feed_backend.module.auth.dto.LoginRequest;
+import oz.yamyam_map.module.auth.dto.LoginRequest;
 
 @Tag(name = "Auth", description = "로그인 인증 관련 API")
 public interface AuthControllerDocs {
