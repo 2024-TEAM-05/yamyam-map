@@ -22,14 +22,10 @@ public class ReviewRating {
 		this.averageScore = totalReviews > 0 ? (double)totalScore / totalReviews : 0.0;
 	}
 
-	public void addReview(int newScore) {
+	public ReviewRating createNewReviewRating(Byte newScore) {
 		totalReviews++;
 		totalScore += newScore;
-		calculateNewReviewRating();
-	}
-
-	private void calculateNewReviewRating() {
-		averageScore = (double)totalScore / totalReviews;
+		return new ReviewRating(totalReviews + 1, totalScore + newScore);
 	}
 
 }

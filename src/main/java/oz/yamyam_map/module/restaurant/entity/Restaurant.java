@@ -27,6 +27,8 @@ public class Restaurant extends BaseEntity {
 	private ReviewRating reviewRating; // 리뷰 평점 데이터를 위한 VO
 
 	public void uploadReview(Byte newRating) {
-		reviewRating.addReview(newRating);
+		ReviewRating newReviewRating = reviewRating.createNewReviewRating(newRating);
+		this.reviewRating = newReviewRating;
+
 	}
 }
