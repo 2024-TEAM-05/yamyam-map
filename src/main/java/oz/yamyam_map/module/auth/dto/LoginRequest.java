@@ -1,4 +1,4 @@
-package team05.integrated_feed_backend.module.auth.dto;
+package oz.yamyam_map.module.auth.dto;
 
 import lombok.Data;
 
