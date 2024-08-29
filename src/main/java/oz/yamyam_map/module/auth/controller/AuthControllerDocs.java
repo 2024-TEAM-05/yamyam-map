@@ -3,6 +3,7 @@ package oz.yamyam_map.module.auth.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import oz.yamyam_map.common.BaseApiResponse;
 import oz.yamyam_map.module.auth.dto.JwtResponse;
 import oz.yamyam_map.module.auth.dto.LoginRequest;
 
@@ -12,5 +13,5 @@ public interface AuthControllerDocs {
 	@ApiResponse(responseCode = "200", description = "로그인이 성공적으로 이루어졌습니다.")
 	@ApiResponse(responseCode = "401", description = "인증에 실패했습니다.")
 	@ApiResponse(responseCode = "403", description = "접근 권한이 없습니다.")
-	oz.yamyam_map.common.ApiResponse<JwtResponse> login(LoginRequest loginRequest);
+	BaseApiResponse<JwtResponse> login(LoginRequest loginRequest);
 }

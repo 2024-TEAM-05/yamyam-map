@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
-import oz.yamyam_map.common.ApiResponse;
+import oz.yamyam_map.common.BaseApiResponse;
 import oz.yamyam_map.module.auth.dto.JwtResponse;
 import oz.yamyam_map.module.auth.dto.LoginRequest;
 import oz.yamyam_map.module.auth.jwt.JwtManager;
@@ -28,7 +28,7 @@ public class AuthController implements AuthControllerDocs {
 	private JwtManager jwtManager;
 
 	@PostMapping("/login")
-	public ApiResponse<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
+	public BaseApiResponse<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
 
 		log.info("로그인 시도: {}", loginRequest.getAccount());
 
@@ -45,7 +45,7 @@ public class AuthController implements AuthControllerDocs {
 
 		log.info("로그인 성공: {}", loginRequest.getAccount());
 		JwtResponse jwtRes = new JwtResponse(token);
-		return oz.yamyam_map.common.ApiResponse.of(HttpStatus.OK, "로그인에 성공했습니다.", jwtRes);
+		return BaseApiResponse.of(HttpStatus.OK, "로그인에 성공했습니다.", jwtRes);
 
 	}
 }
