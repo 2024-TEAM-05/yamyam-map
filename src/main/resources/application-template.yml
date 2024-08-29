@@ -19,6 +19,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL56SpatialDialect
 
 jwt:
   secret: your_jwt_secret_key

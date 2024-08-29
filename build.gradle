@@ -47,6 +47,12 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
+    // 공간 데이터 타입(Point)을 다루기 위한 의존성
+    // Hibernate Spatial
+    implementation 'org.hibernate:hibernate-spatial:6.5.2.Final'
+    // JTS (Java Topology Suite)
+    implementation 'org.locationtech.jts:jts-core:1.19.0'
+
     // MySql
     runtimeOnly 'com.mysql:mysql-connector-j'
 
