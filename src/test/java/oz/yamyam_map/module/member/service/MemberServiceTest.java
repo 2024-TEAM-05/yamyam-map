@@ -64,9 +64,9 @@ class MemberServiceTest {
 		when(memberRepository.findById(memberId)).thenReturn(Optional.empty());
 
 		// When & Then
-		DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
-			memberService.getMemberDetail(token);
-		});
+		DataNotFoundException exception = assertThrows(DataNotFoundException.class, () ->
+			memberService.getMemberDetail(token)
+		);
 
 		assertEquals(USER_NOT_FOUND, exception.getStatusCode());
 	}

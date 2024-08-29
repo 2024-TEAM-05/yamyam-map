@@ -22,9 +22,9 @@ class PasswordTest {
 	@ValueSource(strings = {"short", "123456789", "abcdefghij"})
 	@DisplayName("비밀번호가 조건을 충족하지 않을 때 예외 발생")
 	void invalidPasswordThrowsException(String invalidPassword) {
-		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-			Password.of(invalidPassword, passwordEncoder);
-		});
+		BadRequestException exception = assertThrows(BadRequestException.class, () ->
+			Password.of(invalidPassword, passwordEncoder)
+		);
 
 		// 여기서는 어떤 예외가 발생했는지 구체적으로 테스트할 수 있습니다.
 		// 예: 짧은 비밀번호 또는 단순한 비밀번호에 대한 예외 처리 확인
@@ -53,9 +53,9 @@ class PasswordTest {
 	@ValueSource(strings = {"aaa1234567", "bbb!@#1111", "ccc2222$$$"})
 	@DisplayName("비밀번호에 3회 이상 연속된 문자가 포함되면 예외 발생")
 	void repeatingCharactersPasswordThrowsException(String repeatingPassword) {
-		BadRequestException exception = assertThrows(BadRequestException.class, () -> {
-			Password.of(repeatingPassword, passwordEncoder);
-		});
+		BadRequestException exception = assertThrows(BadRequestException.class, () ->
+			Password.of(repeatingPassword, passwordEncoder)
+		);
 
 		assertEquals(PASSWORD_HAS_REPEATING_CHARACTER, exception.getStatusCode());
 	}
