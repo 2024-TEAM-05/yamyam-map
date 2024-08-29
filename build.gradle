@@ -54,6 +54,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // Hibernate Spatial
+    implementation 'org.hibernate.orm:hibernate-spatial:6.5.2.Final'
+
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
