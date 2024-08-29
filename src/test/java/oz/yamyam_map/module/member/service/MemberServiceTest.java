@@ -32,7 +32,7 @@ class MemberServiceTest {
 	private JwtManager jwtManager;
 
 	@InjectMocks
-	private MemberService memberService;  // MemberService 클래스가 getMemberDetail 메서드를 포함한다고 가정
+	private MemberService memberService;
 
 	@Test
 	@DisplayName("유효한 토큰으로 회원 정보를 정상적으로 가져오는 경우")
@@ -50,7 +50,7 @@ class MemberServiceTest {
 
 		// Then
 		assertNotNull(result);
-		// 추가적으로 MemberDetailRes의 특정 필드값을 검증할 수 있습니다.
+
 	}
 
 	@Test
