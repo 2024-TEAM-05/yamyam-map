@@ -1,5 +1,9 @@
 package oz.yamyam_map.module.member.entity;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import oz.yamyam_map.common.entity.BaseEntity;
+import oz.yamyam_map.module.member.vo.Password;
 
 @Entity
 @Getter
@@ -21,6 +26,30 @@ public class Member extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(unique = true)
+	private String account;
+
+	@Embedded
+	@Column(nullable = false)
+	@Getter(AccessLevel.NONE)
+	private Password password;
+
+	private Double latitude;
+	private Double longitude;
+
+	private Boolean receiveRecommendations;
+
+	public static Member signUp(String account, String password, PasswordEncoder passwordEncoder) {
+		return Member.builder()
+			.account(account)
+			.password(Password.of(password, passwordEncoder))
+			.build();
+	}
+
+	public String getPassword() {
+		return password.getValue();
+	}
 
 }
 
