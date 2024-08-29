@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import oz.yamyam_map.common.ApiResponse;
+import oz.yamyam_map.common.BaseApiResponse;
 import oz.yamyam_map.module.member.dto.MemberSignupReq;
 import oz.yamyam_map.module.member.service.MemberService;
 
@@ -24,9 +24,9 @@ public class MemberController implements MemberControllerDocs {
 
 	@PostMapping
 	@ResponseStatus(ACCEPTED)
-	public ApiResponse<Void> signUp(@RequestBody @Valid MemberSignupReq request) {
+	public BaseApiResponse<Void> signUp(@RequestBody @Valid MemberSignupReq request) {
 		memberService.signUp(request);
-		return ApiResponse.of(SIGN_UP_ACCEPTED);
+		return BaseApiResponse.of(SIGN_UP_ACCEPTED);
 	}
 
 }
