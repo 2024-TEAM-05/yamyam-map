@@ -7,6 +7,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 public class GeoUtils {
 
 	private static final int SRID_WGS84 = 4326;
+	private static final double SCALING_FACTOR = 1_000_000.0;
 
 	/**
 	 * 위, 경도 저장을 위한 Point 생성하는 메서드
@@ -25,6 +26,6 @@ public class GeoUtils {
 	 * 위, 경도 소수점 6자리만 들어가도록 설정하는 메서드
 	 **/
 	private static double roundToSixDecimals(double value) {
-		return Math.round(value * 1_000_000.0) / 1_000_000.0;
+		return Math.round(value * SCALING_FACTOR) / SCALING_FACTOR;
 	}
 }
