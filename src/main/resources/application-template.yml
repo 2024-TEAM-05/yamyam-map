@@ -21,7 +21,7 @@ spring:
         show_sql: true
 
 jwt:
-  secret: your_jwt_secret_key
+  secret: ${JWT_SECRET}
   expiration: 3600000  # 1 hour in milliseconds
 
 logging:
