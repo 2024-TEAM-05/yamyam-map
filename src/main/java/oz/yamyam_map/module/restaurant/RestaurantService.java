@@ -1,13 +1,12 @@
 package oz.yamyam_map.module.restaurant;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import oz.yamyam_map.common.code.StatusCode;
 import oz.yamyam_map.exception.custom.BusinessException;
+import oz.yamyam_map.exception.custom.DataNotFoundException;
 import oz.yamyam_map.module.member.entity.Member;
 import oz.yamyam_map.module.member.repository.MemberRepository;
 import oz.yamyam_map.module.restaurant.dto.request.ReviewUploadReq;
@@ -40,7 +39,9 @@ public class RestaurantService {
 		restaurant.uploadReview(review.getScore());
 	}
 
-	public List<RestaurantDetailRes> getRestaurantDetails(Long restaurantId) {
-		return List.of();
+	public RestaurantDetailRes getRestaurantDetails(Long restaurantId) {
+		Restaurant restaurant = restaurantRepository.findById(restaurantId)
+			.orElseThrow(() -> new DataNotFoundException(StatusCode.RESTAURANT_NOT_FOUND));
+		return RestaurantDetailRes.from(restaurant);
 	}
 }

@@ -2,8 +2,6 @@ package oz.yamyam_map.module.restaurant.controller;
 
 import static org.springframework.http.HttpStatus.*;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +38,9 @@ public class RestaurantController implements RestaurantControllerDocs {
 
 	@ResponseStatus(OK)
 	@GetMapping("/{restaurantId}")
-	public BaseApiResponse<List<RestaurantDetailRes>> getRestaurantDetails(
+	public BaseApiResponse<RestaurantDetailRes> getRestaurantDetails(
 		@PathVariable(name = "restaurantId") Long restaurantId) {
-		List<RestaurantDetailRes> restaurantDetailRes = restaurantService.getRestaurantDetails(restaurantId);
+		RestaurantDetailRes restaurantDetailRes = restaurantService.getRestaurantDetails(restaurantId);
 		return BaseApiResponse.of(OK, restaurantDetailRes);
 	}
 }
