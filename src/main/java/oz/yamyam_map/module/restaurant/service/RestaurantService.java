@@ -1,4 +1,4 @@
-package oz.yamyam_map.module.restaurant;
+package oz.yamyam_map.module.restaurant.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
