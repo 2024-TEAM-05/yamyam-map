@@ -2,6 +2,8 @@ package oz.yamyam_map.module.member.entity;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -53,6 +55,21 @@ public class Member extends BaseEntity {
 
 	public String getPassword() {
 		return password.getValue();
+	}
+
+	public void updateLocation(Double latitude, Double longitude) {
+		// GeometryFactory는 JTS (Java Topology Suite)의 Point 객체를 생성하는 데 사용됩니다.
+		// 경도와 위도를 받아 좌표를 생성하고, 이를 사용해 위치를 업데이트합니다.
+		final GeometryFactory geometryFactory = new GeometryFactory();
+
+		// GeometryFactory를 사용하여 Point 생성
+		this.location = geometryFactory.createPoint(new Coordinate(longitude, latitude)); // 경도, 위도 순서
+	}
+
+	public void updateReceiveRecommendations(Boolean receiveRecommendations) {
+
+		this.receiveRecommendations = receiveRecommendations;
+
 	}
 
 }
