@@ -12,6 +12,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Schema(description = "시군구 조회 API의 응답 객체")
 public class RegionResponse {
 
 	@Schema(description = "시/도 별로 그룹화 한 시군구 리스트")
@@ -24,6 +25,7 @@ public class RegionResponse {
 	// 시군구 정보(id, 위치) 같이 뿌려주기 위한 CityDistrict InnerClass
 	@Getter
 	@AllArgsConstructor
+	@Schema(description = "시군구 데이터")
 	public static class CityDistrict {
 		private Long id;
 		private String name;

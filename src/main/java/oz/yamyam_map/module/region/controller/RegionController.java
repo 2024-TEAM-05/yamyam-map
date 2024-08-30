@@ -1,6 +1,5 @@
 package oz.yamyam_map.module.region.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +13,7 @@ import oz.yamyam_map.module.region.service.RegionSerivce;
 @RestController
 @RequestMapping("/api/region")
 @RequiredArgsConstructor
-public class RegionController {
+public class RegionController implements RegionControllerDocs {
 
 	private final RegionSerivce regionSerivce;
 
