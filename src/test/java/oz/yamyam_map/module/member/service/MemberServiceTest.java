@@ -1,6 +1,5 @@
 package oz.yamyam_map.module.member.service;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -31,7 +30,7 @@ public class MemberServiceTest {
 	private MemberService memberService;
 
 	@Test
-	@DisplayName("유효한 토큰으로 회원 정보를 정상적으로 가져오는 경우")
+	@DisplayName("[성공] 유효한 토큰으로 회원 정보를 정상적으로 가져오는 경우")
 	void getMemberDetailSuccess() {
 		// Given
 		Long memberId = 1L;
@@ -44,13 +43,13 @@ public class MemberServiceTest {
 
 		// Then
 		assertNotNull(result);
-		assertThat(result.getAccount()).isEqualTo("account");
+		assertEquals("account", result.getAccount());
 
 		verify(memberRepository, times(1)).findById(memberId);
 	}
 
 	@Test
-	@DisplayName("회원이 존재하지 않을 때 DataNotFoundException 발생")
+	@DisplayName("[실패] 회원이 존재하지 않을 때 DataNotFoundException 발생")
 	void getMemberDetailThrowsExceptionWhenMemberNotFound() {
 		// Given
 		Long memberId = 1L;
