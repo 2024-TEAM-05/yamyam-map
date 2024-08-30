@@ -1,10 +1,13 @@
 package oz.yamyam_map.module.restaurant.controller;
 
+import java.util.List;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import oz.yamyam_map.common.BaseApiResponse;
 import oz.yamyam_map.module.restaurant.dto.request.ReviewUploadReq;
+import oz.yamyam_map.module.restaurant.dto.response.RestaurantDetailRes;
 
 @Tag(name = "Restaurant", description = "맛집 관련 API")
 public interface RestaurantControllerDocs {
@@ -16,5 +19,8 @@ public interface RestaurantControllerDocs {
 		ReviewUploadReq req
 	);
 
+	@Operation(summary = "맛집 상세 정보 조회", description = "맛집 id를 통해 상세 정보를 조회합니다.")
+	@ApiResponse(responseCode = "200", description = "요청이 성공했습니다.", useReturnTypeSchema = true)
+	BaseApiResponse<List<RestaurantDetailRes>> getRestaurantDetails(Long restaurantId);
 }
 
