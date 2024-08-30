@@ -16,8 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import oz.yamyam_map.common.BaseApiResponse;
 import oz.yamyam_map.common.code.StatusCode;
-import oz.yamyam_map.exception.custom.BusinessException;
-import oz.yamyam_map.module.auth.jwt.JwtManager;
+import oz.yamyam_map.common.util.PermissionValidator;
 import oz.yamyam_map.module.auth.security.CustomUserDetails;
 import oz.yamyam_map.module.member.dto.request.MemberSignupReq;
 import oz.yamyam_map.module.member.dto.request.MemberUpdateReq;
@@ -30,7 +29,6 @@ import oz.yamyam_map.module.member.service.MemberService;
 public class MemberController implements MemberControllerDocs {
 
 	private final MemberService memberService;
-	private final JwtManager jwtManager;
 
 	@PostMapping
 	@ResponseStatus(ACCEPTED)
@@ -46,9 +44,9 @@ public class MemberController implements MemberControllerDocs {
 		@PathVariable Long id,
 		@AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-		Long memberId = extractMemberIdFromToken(customUserDetails.getMemberId(), id);
+		PermissionValidator.validateMemberId(customUserDetails, id);
 
-		MemberDetailRes memberDetail = memberService.getMemberDetail(memberId);
+		MemberDetailRes memberDetail = memberService.getMemberDetail(id);
 
 		return BaseApiResponse.of(StatusCode.OK, memberDetail);
 	}
@@ -60,19 +58,11 @@ public class MemberController implements MemberControllerDocs {
 		@AuthenticationPrincipal CustomUserDetails customUserDetails,
 		@Valid @RequestBody MemberUpdateReq req) {
 
-		Long memberId = extractMemberIdFromToken(customUserDetails.getMemberId(), id);
+		PermissionValidator.validateMemberId(customUserDetails, id);
 
-		memberService.updateMemberSettings(memberId, req);
+		memberService.updateMemberSettings(id, req);
 
 		return BaseApiResponse.of(StatusCode.OK);
-	}
-
-	private Long extractMemberIdFromToken(Long memberId, Long id) {
-
-		if (!memberId.equals(id)) {
-			throw new BusinessException(StatusCode.UNAUTHORIZED);
-		}
-		return memberId;
 	}
 
 }
