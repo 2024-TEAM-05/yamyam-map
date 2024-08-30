@@ -15,13 +15,13 @@ import lombok.Getter;
 public class RegionResponse {
 
 	@Schema(description = "시/도 별로 그룹화 한 시군구 리스트")
-	private Map<String, List<String>> cityDistricts;
+	private Map<String, List<CityDistrict>> cityDistricts;
 
-	public static RegionResponse of(Map<String, List<String>> cityDistricts) {
+	public static RegionResponse of(Map<String, List<CityDistrict>> cityDistricts) {
 		return new RegionResponse(cityDistricts);
 	}
 
-	// 시군구 정보 같이 뿌려주기 위한 CityDistrict InnerClass
+	// 시군구 정보(id, 위치) 같이 뿌려주기 위한 CityDistrict InnerClass
 	@Getter
 	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class CityDistrict {
