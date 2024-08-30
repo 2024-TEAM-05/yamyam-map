@@ -1,5 +1,8 @@
 package oz.yamyam_map.module.member.entity;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.locationtech.jts.geom.Point;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.Column;
@@ -35,8 +38,9 @@ public class Member extends BaseEntity {
 	@Getter(AccessLevel.NONE)
 	private Password password;
 
-	private Double latitude;
-	private Double longitude;
+	@JdbcTypeCode(SqlTypes.GEOMETRY)
+	@Column(columnDefinition = "GEOMETRY")
+	private Point location;
 
 	private Boolean receiveRecommendations;
 
