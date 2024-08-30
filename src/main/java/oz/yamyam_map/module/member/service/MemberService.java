@@ -22,7 +22,7 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	@Transactional
-	public void signUp(MemberSignupReq request) {
+	public void postSignup(MemberSignupReq request) {
 		// 계정 중복 검사
 		validateAccountUnique(request.account());
 

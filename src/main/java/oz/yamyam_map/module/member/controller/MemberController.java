@@ -29,9 +29,9 @@ public class MemberController implements MemberControllerDocs {
 
 	@PostMapping
 	@ResponseStatus(ACCEPTED)
-	public BaseApiResponse<Void> signUp(
+	public BaseApiResponse<Void> postSignup(
 		@RequestBody @Valid MemberSignupReq request) {
-		memberService.signUp(request);
+		memberService.postSignup(request);
 		return BaseApiResponse.of(StatusCode.SIGN_UP_ACCEPTED);
 	}
 
