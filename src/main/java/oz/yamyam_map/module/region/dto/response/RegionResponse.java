@@ -23,7 +23,7 @@ public class RegionResponse {
 
 	// 시군구 정보(id, 위치) 같이 뿌려주기 위한 CityDistrict InnerClass
 	@Getter
-	@AllArgsConstructor(access = AccessLevel.PRIVATE)
+	@AllArgsConstructor
 	public static class CityDistrict {
 		private Long id;
 		private String name;
