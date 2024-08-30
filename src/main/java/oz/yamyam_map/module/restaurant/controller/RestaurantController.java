@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import oz.yamyam_map.common.BaseApiResponse;
+import oz.yamyam_map.common.code.StatusCode;
 import oz.yamyam_map.module.restaurant.RestaurantService;
 import oz.yamyam_map.module.restaurant.dto.request.ReviewUploadReq;
 import oz.yamyam_map.module.restaurant.dto.response.RestaurantDetailRes;
@@ -41,6 +42,6 @@ public class RestaurantController implements RestaurantControllerDocs {
 	public BaseApiResponse<RestaurantDetailRes> getRestaurantDetails(
 		@PathVariable(name = "restaurantId") Long restaurantId) {
 		RestaurantDetailRes restaurantDetailRes = restaurantService.getRestaurantDetails(restaurantId);
-		return BaseApiResponse.of(OK, restaurantDetailRes);
+		return BaseApiResponse.of(OK, StatusCode.OK.getMessage(), restaurantDetailRes);
 	}
 }
