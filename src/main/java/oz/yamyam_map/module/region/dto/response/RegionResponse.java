@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.locationtech.jts.geom.Point;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import oz.yamyam_map.common.util.GeoUtils;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -29,6 +32,9 @@ public class RegionResponse {
 	public static class CityDistrict {
 		private Long id;
 		private String name;
+
+		@Schema(description = "Location in x, y 좌표", example = "{\"x\": 127.028, \"y\": 37.496}")
+		@JsonSerialize(using = GeoUtils.PointSerializer.class)
 		private Point location;
 	}
 }
