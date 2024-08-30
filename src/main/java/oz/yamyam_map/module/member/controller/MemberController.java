@@ -1,8 +1,6 @@
 package oz.yamyam_map.module.member.controller;
 
-import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.*;
-import static oz.yamyam_map.common.code.StatusCode.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import oz.yamyam_map.common.BaseApiResponse;
+import oz.yamyam_map.common.code.StatusCode;
 import oz.yamyam_map.module.member.dto.request.MemberSignupReq;
 import oz.yamyam_map.module.member.dto.response.MemberDetailRes;
 import oz.yamyam_map.module.member.service.MemberService;
@@ -30,7 +29,7 @@ public class MemberController implements MemberControllerDocs {
 	@ResponseStatus(ACCEPTED)
 	public BaseApiResponse<Void> signUp(@RequestBody @Valid MemberSignupReq request) {
 		memberService.signUp(request);
-		return BaseApiResponse.of(SIGN_UP_ACCEPTED);
+		return BaseApiResponse.of(StatusCode.SIGN_UP_ACCEPTED);
 	}
 
 	@GetMapping("/detail")
@@ -39,7 +38,7 @@ public class MemberController implements MemberControllerDocs {
 
 		MemberDetailRes memberDetail = memberService.getMemberDetail(token.substring(7));
 
-		return BaseApiResponse.of(OK, memberDetail);
+		return BaseApiResponse.of(StatusCode.OK, memberDetail);
 	}
 
 }
