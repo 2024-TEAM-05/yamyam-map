@@ -28,6 +28,9 @@ public enum StatusCode {
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 오류가 발생했습니다."),
 	FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 
+	// Restaurant
+	RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "조회하려는 맛집이 존재하지 않습니다."),
+
 	/**
 	 * 500 번대 CODE
 	 **/
