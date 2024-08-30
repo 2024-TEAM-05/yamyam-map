@@ -28,7 +28,7 @@ public class JwtManager {
 	private final Key secretKey;
 
 	@Value("${jwt.expiration}")
-	private long tokenValidityInseconds;
+	private long tokenValidityInSeconds;
 
 	//jjwt: String secretKey -> Key 객체 방식으로 대체됨
 	public JwtManager(@Value("${jwt.secret}") String secret) {
@@ -48,7 +48,7 @@ public class JwtManager {
 		claims.put(CLAIM_ACCOUNT, account);
 
 		Date now = new Date();
-		Date validity = new Date(now.getTime() + tokenValidityInseconds * 1000);
+		Date validity = new Date(now.getTime() + tokenValidityInSeconds * 1000);
 
 		String token = Jwts.builder()
 			.setClaims(claims)
@@ -78,13 +78,10 @@ public class JwtManager {
 	// jjwt : parser() 메서드가 parserBuilder()로 대체됨
 	// JWT 토큰에서 memberId 추출 (Body: 페이로드)
 	public Long getMemberId(String token) {
-
-		String bearerToken = token.substring(7);
-
 		return Long.parseLong(Jwts.parserBuilder()
 			.setSigningKey(secretKey)
 			.build()
-			.parseClaimsJws(bearerToken)
+			.parseClaimsJws(token)
 			.getBody()
 			.getSubject());
 	}
