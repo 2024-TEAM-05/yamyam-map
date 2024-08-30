@@ -1,5 +1,7 @@
 package oz.yamyam_map.module.restaurant;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +11,7 @@ import oz.yamyam_map.exception.custom.BusinessException;
 import oz.yamyam_map.module.member.entity.Member;
 import oz.yamyam_map.module.member.repository.MemberRepository;
 import oz.yamyam_map.module.restaurant.dto.request.ReviewUploadReq;
+import oz.yamyam_map.module.restaurant.dto.response.RestaurantDetailRes;
 import oz.yamyam_map.module.restaurant.entity.Restaurant;
 import oz.yamyam_map.module.restaurant.entity.Review;
 import oz.yamyam_map.module.restaurant.repository.RestaurantRepository;
@@ -35,5 +38,9 @@ public class RestaurantService {
 
 		//평점 업데이트
 		restaurant.uploadReview(review.getScore());
+	}
+
+	public List<RestaurantDetailRes> getRestaurantDetails(Long restaurantId) {
+		return List.of();
 	}
 }
