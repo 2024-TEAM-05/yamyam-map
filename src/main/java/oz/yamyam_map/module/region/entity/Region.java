@@ -31,6 +31,6 @@ public class Region {
 	private String cityDistrict;
 
 	@Column(nullable = false, columnDefinition = "POINT")
-	private Point regionLocation;
+	private Point location;
 
 }
