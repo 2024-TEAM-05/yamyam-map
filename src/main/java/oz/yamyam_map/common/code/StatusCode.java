@@ -28,6 +28,7 @@ public enum StatusCode {
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 오류가 발생했습니다."),
 	FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
 	MISSING_LATITUDE_OR_LONGITUDE(HttpStatus.BAD_REQUEST, "위도와 경도는 동시에 제공되어야 합니다."),
+	FORBIDDEN_RESOURCE_ACCESS(HttpStatus.FORBIDDEN, "해당 리소스에 대한 권한이 없습니다."),
 
 	/**
 	 * 500 번대 CODE

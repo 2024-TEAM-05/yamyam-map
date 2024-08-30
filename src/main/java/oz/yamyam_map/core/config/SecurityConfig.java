@@ -43,11 +43,10 @@ public class SecurityConfig {
 					"/v3/api-docs/**",
 					"/swagger-ui.html",
 					"/api-docs/**",
-					"/webjars/**",
-					"/api/member" // 회원가입 api 주소
+					"/webjars/**"
 				).permitAll()  // Swagger UI 관련 경로에 인증 없이 접근 허용
 				.requestMatchers("/api/auth/**").permitAll() // 인증 없이 접근할 수 있는 경로 설정 (회원가입, 로그인 등)
-				.requestMatchers(HttpMethod.POST, "/api/members").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/member").permitAll()
 				.anyRequest().authenticated() // 그 외의 모든 요청 인증 필요
 			)
 			.exceptionHandling(exceptionHandling -> exceptionHandling
