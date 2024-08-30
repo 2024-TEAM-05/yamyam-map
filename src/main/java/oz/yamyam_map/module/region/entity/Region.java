@@ -30,7 +30,7 @@ public class Region {
 	@Column(nullable = false)
 	private String cityDistrict;
 
-	@Column(nullable = false, columnDefinition = "POINT")
+	@Column(nullable = false, columnDefinition = "Point")
 	private Point location;
 
 }
