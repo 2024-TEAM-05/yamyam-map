@@ -27,6 +27,7 @@ public enum StatusCode {
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "요청된 사용자를 찾을 수 없습니다."),
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "인증 오류가 발생했습니다."),
 	FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
+	MISSING_LATITUDE_OR_LONGITUDE(HttpStatus.BAD_REQUEST, "위도와 경도는 동시에 제공되어야 합니다."),
 
 	/**
 	 * 500 번대 CODE
