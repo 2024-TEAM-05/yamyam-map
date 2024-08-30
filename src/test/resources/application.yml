@@ -1,7 +1,6 @@
+server:
+  port: 9020
 spring:
-  application:
-    name: yamyam-map
-
   datasource:
     url: jdbc:h2:mem:testdb;DATABASE_TO_UPPER=false;MODE=MYSQL
     username: sa
@@ -11,19 +10,17 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  sql:
+    init:
+      mode: always
   jpa:
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
     properties:
       hibernate:
-        format_sql: true
         show_sql: true
-        dialect: org.hibernate.spatial.dialect.mysql.MySQL56SpatialDialect
-
-jwt:
-  secret: ${JWT_SECRET}
-  expiration: 3600000  # 1 hour in milliseconds
+        format_sql: true
+    open-in-view: false
 
 logging:
   level:
@@ -36,3 +33,6 @@ springdoc:
   swagger-ui:
     tags-sorter: alpha
     operations-sorter: method
+jwt:
+  secret: dGhpc2lzYXZlcnlzZWN1cmUzMmJ5dGVrZXlmb3JoczI1Ng==
+  expiration: 3600000  # 1 hour in milliseconds
