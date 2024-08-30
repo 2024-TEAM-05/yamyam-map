@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import oz.yamyam_map.common.BaseApiResponse;
+import oz.yamyam_map.common.code.StatusCode;
 import oz.yamyam_map.module.region.dto.response.RegionResponse;
 import oz.yamyam_map.module.region.service.RegionSerivce;
 
@@ -18,9 +20,8 @@ public class RegionController {
 
 	// 시군구 목록 api
 	@GetMapping
-	public ResponseEntity<RegionResponse> getRegions() {
+	public BaseApiResponse<RegionResponse> getRegions() {
 		RegionResponse response = regionSerivce.getRegionResponse();
-		return ResponseEntity.ok(response);
+		return BaseApiResponse.of(StatusCode.OK, response);
 	}
-
 }
