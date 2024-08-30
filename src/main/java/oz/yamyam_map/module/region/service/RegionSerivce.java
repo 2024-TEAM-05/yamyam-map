@@ -1,5 +1,6 @@
 package oz.yamyam_map.module.region.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,6 +23,10 @@ public class RegionSerivce {
 	// 시/도와 시/도별 시군구 목록 가져오기
 	public RegionResponse getRegionResponse() {
 		List<Region> regions = regionRepository.findAll();
+
+		if (regions.isEmpty()) {
+			return RegionResponse.of(Collections.emptyMap());
+		}
 
 		// key:도/시, value:해당 도/시의 시군구 리스트
 		Map<String, List<RegionResponse.CityDistrict>> cityRestricts = regions.stream()
