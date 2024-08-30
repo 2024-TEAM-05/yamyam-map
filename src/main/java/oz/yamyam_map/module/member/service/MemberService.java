@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import oz.yamyam_map.exception.custom.DataNotFoundException;
 import oz.yamyam_map.exception.custom.DuplicateResourceException;
-import oz.yamyam_map.module.auth.jwt.JwtManager;
 import oz.yamyam_map.module.member.dto.request.MemberSignupReq;
 import oz.yamyam_map.module.member.dto.response.MemberDetailRes;
 import oz.yamyam_map.module.member.entity.Member;
@@ -21,10 +20,9 @@ public class MemberService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final MemberRepository memberRepository;
-	private final JwtManager jwtManager;
 
 	@Transactional
-	public void signUp(MemberSignupReq request) {
+	public void postSignup(MemberSignupReq request) {
 		// 계정 중복 검사
 		validateAccountUnique(request.account());
 
@@ -40,9 +38,7 @@ public class MemberService {
 		}
 	}
 
-	public MemberDetailRes getMemberDetail(String token) {
-
-		Long memberId = jwtManager.getMemberId(token);
+	public MemberDetailRes getMemberDetail(Long memberId) {
 
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new DataNotFoundException(USER_NOT_FOUND));

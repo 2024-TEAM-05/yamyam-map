@@ -15,7 +15,7 @@ public interface MemberControllerDocs {
 	@ApiResponses(value = {
 		@ApiResponse(responseCode = "202", description = "회원가입이 완료되었습니다.", useReturnTypeSchema = true)
 	})
-	BaseApiResponse<Void> signUp(MemberSignupReq request);
+	BaseApiResponse<Void> postSignup(MemberSignupReq request);
 
 	@Operation(summary = "사용자 정보 조회")
 	@ApiResponses(value = {

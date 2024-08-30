@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import oz.yamyam_map.common.BaseApiResponse;
 import oz.yamyam_map.common.code.StatusCode;
+import oz.yamyam_map.module.auth.jwt.JwtManager;
 import oz.yamyam_map.module.member.dto.request.MemberSignupReq;
 import oz.yamyam_map.module.member.dto.response.MemberDetailRes;
 import oz.yamyam_map.module.member.service.MemberService;
@@ -24,19 +25,28 @@ import oz.yamyam_map.module.member.service.MemberService;
 public class MemberController implements MemberControllerDocs {
 
 	private final MemberService memberService;
+	private final JwtManager jwtManager;
 
 	@PostMapping
 	@ResponseStatus(ACCEPTED)
-	public BaseApiResponse<Void> signUp(@RequestBody @Valid MemberSignupReq request) {
-		memberService.signUp(request);
+	public BaseApiResponse<Void> postSignup(
+		@RequestBody @Valid MemberSignupReq request) {
+		memberService.postSignup(request);
 		return BaseApiResponse.of(StatusCode.SIGN_UP_ACCEPTED);
 	}
 
 	@GetMapping("/detail")
 	@ResponseStatus(OK)
-	public BaseApiResponse<MemberDetailRes> getMemberDetail(@RequestHeader("Authorization") String token) {
+	public BaseApiResponse<MemberDetailRes> getMemberDetail(
+		@RequestHeader("Authorization") String token) {
 
-		MemberDetailRes memberDetail = memberService.getMemberDetail(token.substring(7));
+		// 토큰에서 "Bearer " 부분을 제거하고 JWT 토큰만 추출
+		String jwtToken = token.substring(7);
+
+		// JWT 토큰에서 사용자 ID를 추출
+		Long memberId = jwtManager.getMemberId(jwtToken);
+
+		MemberDetailRes memberDetail = memberService.getMemberDetail(memberId);
 
 		return BaseApiResponse.of(StatusCode.OK, memberDetail);
 	}
