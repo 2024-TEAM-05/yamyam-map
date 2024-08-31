@@ -28,6 +28,12 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: application.yml 생성
+        run: |
+          cd ./src/main/resources
+          touch ./application.yml
+          echo "${{ secrets.PROPERTIES }}" > ./application.yml
+        shell: bash
       - name: 빌드 권한 부여
         run: chmod +x gradlew
 
@@ -49,7 +55,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.KEY }}
           script: |
-            sudo docker rm $(sudo docker ps -a)
+            sudo docker ps -qa | grep -q . && sudo docker rm -f $(docker ps -qa)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
             cd ~
             docker-compose up -d
