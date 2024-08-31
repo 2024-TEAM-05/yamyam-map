@@ -20,7 +20,7 @@ public class RegionController implements RegionControllerDocs {
 	// 시군구 목록 api
 	@GetMapping
 	public BaseApiResponse<RegionResponse> getRegions() {
-		RegionResponse response = regionSerivce.getRegionResponse();
+		RegionResponse response = regionSerivce.getRegions();
 		return BaseApiResponse.of(StatusCode.OK, response);
 	}
 }

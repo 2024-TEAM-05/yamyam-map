@@ -34,7 +34,7 @@ public class RegionSerivce {
 				Region::getProvince,    // 도/시로 그룹화
 				Collectors.mapping(
 					this::convertToCityDistrict,
-					Collectors.toList()		// CityDistrict들을 List로 모으기
+					Collectors.toList()
 				)
 			));
 
