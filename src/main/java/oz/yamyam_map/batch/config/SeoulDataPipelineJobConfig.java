@@ -1,6 +1,8 @@
 package oz.yamyam_map.batch.config;
 
+import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
@@ -18,6 +20,14 @@ import oz.yamyam_map.module.restaurant.entity.Restaurant;
 @Configuration
 @RequiredArgsConstructor
 public class SeoulDataPipelineJobConfig {
+
+	@Bean
+	public Job seoulDataPipelineJob(JobRepository jobRepository, Step rowSeoulDataStoreStep, Step seoulDataUpdateStep) {
+		return new JobBuilder("SeoulDataPipelineJob", jobRepository)
+			.start(rowSeoulDataStoreStep)
+			.next(seoulDataUpdateStep)
+			.build();
+	}
 
 	/**
 	 * Step 1. OpenApi로 받아 온 데이터를 row table에 저장
