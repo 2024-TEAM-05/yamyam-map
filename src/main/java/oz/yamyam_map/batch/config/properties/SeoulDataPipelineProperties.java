@@ -1,4 +1,4 @@
-package oz.yamyam_map.batch.config;
+package oz.yamyam_map.batch.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

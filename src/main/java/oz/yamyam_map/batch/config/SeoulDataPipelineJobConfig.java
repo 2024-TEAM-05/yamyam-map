@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import lombok.RequiredArgsConstructor;
+import oz.yamyam_map.batch.config.properties.SeoulDataPipelineProperties;
 import oz.yamyam_map.batch.domain.RowSeoulRestaurant;
 import oz.yamyam_map.batch.dto.SeoulRestaurantDto;
 import oz.yamyam_map.module.restaurant.entity.Restaurant;
