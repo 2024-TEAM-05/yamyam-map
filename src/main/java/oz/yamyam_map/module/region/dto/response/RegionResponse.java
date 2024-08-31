@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import oz.yamyam_map.common.util.GeoUtils;
 import oz.yamyam_map.module.region.entity.Region;
@@ -29,6 +30,7 @@ public class RegionResponse {
 	// 시군구 정보(id, 위치) 같이 뿌려주기 위한 CityDistrict InnerClass
 	@Getter
 	@AllArgsConstructor
+	@EqualsAndHashCode
 	@Schema(description = "시군구 데이터")
 	public static class CityDistrict {
 		private Long id;
