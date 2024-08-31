@@ -2,10 +2,7 @@ name: Java CD with Gradle
 
 on:
   push:
-    branches: [ "main" ]
-  # 테스트를 위해 넣어둔 부분 > 추후 삭제 예정
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "chore/setup-cd-pipeline" ]
 
 permissions:
   contents: read
