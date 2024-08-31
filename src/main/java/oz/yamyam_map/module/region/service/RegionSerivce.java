@@ -21,7 +21,7 @@ public class RegionSerivce {
 	private final RegionRepository regionRepository;
 
 	// 시/도와 시/도별 시군구 목록 가져오기
-	public RegionResponse getRegionResponse() {
+	public RegionResponse getRegions() {	
 		List<Region> regions = regionRepository.findAll();
 
 		if (regions.isEmpty()) {
