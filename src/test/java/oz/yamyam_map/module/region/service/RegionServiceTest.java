@@ -1,4 +1,4 @@
-package oz.yamyam_map.module.member.service;
+package oz.yamyam_map.module.region.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
