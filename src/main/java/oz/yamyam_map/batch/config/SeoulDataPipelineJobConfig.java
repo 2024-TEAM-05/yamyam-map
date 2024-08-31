@@ -8,6 +8,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -19,7 +20,10 @@ import oz.yamyam_map.module.restaurant.entity.Restaurant;
 
 @Configuration
 @RequiredArgsConstructor
+@ConfigurationPropertiesScan
 public class SeoulDataPipelineJobConfig {
+
+	private final SeoulDataPipelineProperties properties;
 
 	@Bean
 	public Job seoulDataPipelineJob(JobRepository jobRepository, Step rowSeoulDataStoreStep, Step seoulDataUpdateStep) {
@@ -44,7 +48,7 @@ public class SeoulDataPipelineJobConfig {
 		ItemWriter<RowSeoulRestaurant> rowSeoulDataWriter
 	) {
 		return new StepBuilder("RowSeoulDataStoreStep", jobRepository)
-			.<SeoulRestaurantDto, RowSeoulRestaurant>chunk(100, platformTransactionManager)
+			.<SeoulRestaurantDto, RowSeoulRestaurant>chunk(properties.chunkSize(), platformTransactionManager)
 			.reader(rowSeoulDataApiReader)
 			.processor(rowSeoulDataProcessor)
 			.writer(rowSeoulDataWriter)
@@ -66,7 +70,7 @@ public class SeoulDataPipelineJobConfig {
 		ItemWriter<Restaurant> seoulDataWriter
 	) {
 		return new StepBuilder("SeoulDataUpdateStep", jobRepository)
-			.<RowSeoulRestaurant, Restaurant>chunk(100, platformTransactionManager)
+			.<RowSeoulRestaurant, Restaurant>chunk(properties.chunkSize(), platformTransactionManager)
 			.reader(rowSeoulDataDbReader)
 			.processor(seoulDataProcessor)
 			.writer(seoulDataWriter)

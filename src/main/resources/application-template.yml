@@ -29,6 +29,11 @@ jwt:
   secret: ${JWT_SECRET}
   expiration: 3600000  # 1 hour in milliseconds
 
+batch:
+  seoul:
+    auth_key: ${AUTH_KEY}
+    chunk_size: 100
+
 logging:
   level:
     root: INFO
