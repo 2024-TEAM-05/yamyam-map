@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import oz.yamyam_map.common.BaseApiResponse;
+import oz.yamyam_map.module.auth.security.CustomUserDetails;
 import oz.yamyam_map.module.member.dto.request.MemberSignupReq;
 import oz.yamyam_map.module.member.dto.request.MemberUpdateReq;
 import oz.yamyam_map.module.member.dto.response.MemberDetailRes;
@@ -24,7 +25,7 @@ public interface MemberControllerDocs {
 		@ApiResponse(responseCode = "403", description = "해당 리소스에 대한 권한이 없습니다.", useReturnTypeSchema = true),
 		@ApiResponse(responseCode = "404", description = "요청된 사용자를 찾을 수 없습니다.", useReturnTypeSchema = true)
 	})
-	BaseApiResponse<MemberDetailRes> getMemberDetail(Long id, String token);
+	BaseApiResponse<MemberDetailRes> getMemberDetail(Long id, CustomUserDetails customUserDetails);
 
 	@Operation(summary = "사용자 정보 업데이트")
 	@ApiResponses(value = {
@@ -32,5 +33,5 @@ public interface MemberControllerDocs {
 		@ApiResponse(responseCode = "403", description = "해당 리소스에 대한 권한이 없습니다.", useReturnTypeSchema = true),
 		@ApiResponse(responseCode = "400", description = "위도와 경도는 동시에 제공되어야 합니다.", useReturnTypeSchema = true)
 	})
-	BaseApiResponse<Void> updateMember(Long id, String token, MemberUpdateReq req);
+	BaseApiResponse<Void> updateMember(Long id, CustomUserDetails customUserDetails, MemberUpdateReq req);
 }
