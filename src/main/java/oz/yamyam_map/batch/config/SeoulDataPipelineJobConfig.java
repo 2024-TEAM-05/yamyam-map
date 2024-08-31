@@ -13,6 +13,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import lombok.RequiredArgsConstructor;
 import oz.yamyam_map.batch.domain.RowSeoulRestaurant;
 import oz.yamyam_map.batch.dto.SeoulRestaurantDto;
+import oz.yamyam_map.module.restaurant.entity.Restaurant;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,6 +38,28 @@ public class SeoulDataPipelineJobConfig {
 			.reader(rowSeoulDataApiReader)
 			.processor(rowSeoulDataProcessor)
 			.writer(rowSeoulDataWriter)
+			.build();
+	}
+
+	/**
+	 * Step 2. Row table에서 변경/추가된 데이터를 전처리 후 운영 테이블에 반영
+	 * RowSeoulDataDBReader: row_seoul_restaurant 테이블에서 데이터를 읽어오는 객체
+	 * SeoulDataProcessor: 변경/추가된 RowSeoulRestaurant를 Restaurant 객체로 변환하는 객체 (전처리도 여기서 수행)
+	 * RowSeoulDataWriter: Restaurant를 restraunt 테이블에 반영하는 객체
+	 */
+	@Bean
+	public Step seoulDataUpdateStep(
+		JobRepository jobRepository,
+		PlatformTransactionManager platformTransactionManager,
+		ItemReader<RowSeoulRestaurant> rowSeoulDataDbReader,
+		ItemProcessor<RowSeoulRestaurant, Restaurant> seoulDataProcessor,
+		ItemWriter<Restaurant> seoulDataWriter
+	) {
+		return new StepBuilder("SeoulDataUpdateStep", jobRepository)
+			.<RowSeoulRestaurant, Restaurant>chunk(100, platformTransactionManager)
+			.reader(rowSeoulDataDbReader)
+			.processor(seoulDataProcessor)
+			.writer(seoulDataWriter)
 			.build();
 	}
 
