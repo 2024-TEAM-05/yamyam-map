@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import org.locationtech.jts.geom.Point;
 
 @Entity
@@ -21,7 +22,6 @@ public class Region {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="region_id")
 	private Long id;
 
 	@Column(nullable = false)
@@ -30,7 +30,7 @@ public class Region {
 	@Column(nullable = false)
 	private String cityDistrict;
 
-	@Column(nullable = false, columnDefinition = "POINT")
+	@Column(nullable = false, columnDefinition = "Point")
 	private Point location;
 
 }
