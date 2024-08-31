@@ -21,7 +21,7 @@ public class RegionSerivce {
 	private final RegionRepository regionRepository;
 
 	// 시/도와 시/도별 시군구 목록 가져오기
-	public RegionResponse getRegions() {	
+	public RegionResponse getRegions() {
 		List<Region> regions = regionRepository.findAll();
 
 		if (regions.isEmpty()) {
@@ -33,19 +33,11 @@ public class RegionSerivce {
 			.collect(Collectors.groupingBy(
 				Region::getProvince,    // 도/시로 그룹화
 				Collectors.mapping(
-					this::convertToCityDistrict,
+					RegionResponse.CityDistrict::newCityDistrict,
 					Collectors.toList()
 				)
 			));
 
 		return RegionResponse.of(cityRestricts);
-	}
-
-	private RegionResponse.CityDistrict convertToCityDistrict(Region region) {
-		return new RegionResponse.CityDistrict(
-			region.getId(),
-			region.getCityDistrict(),
-			region.getLocation()
-		);
 	}
 }

@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import oz.yamyam_map.common.util.GeoUtils;
+import oz.yamyam_map.module.region.entity.Region;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -36,5 +37,13 @@ public class RegionResponse {
 		@Schema(description = "Location in x, y 좌표", example = "{\"x\": 127.028, \"y\": 37.496}")
 		@JsonSerialize(using = GeoUtils.PointSerializer.class)
 		private Point location;
+
+		public static CityDistrict newCityDistrict(Region region) {
+			return new CityDistrict(
+				region.getId(),
+				region.getCityDistrict(),
+				region.getLocation()
+			);
+		}
 	}
 }
