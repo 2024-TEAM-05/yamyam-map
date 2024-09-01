@@ -17,9 +17,4 @@ public class RestaurantSearchRes {
 	private Point location;
 	private double averageScore;
 
-	@Getter
-	@AllArgsConstructor
-	public static class ListResponse {
-		private List<RestaurantSearchRes> restaurants;
-	}
 }
