@@ -2,7 +2,7 @@ name: Java CD with Gradle
 
 on:
   push:
-    branches: [ "chore/setup-cd-pipeline" ]
+    branches: [ "main" ]
 
 permissions:
   contents: read
