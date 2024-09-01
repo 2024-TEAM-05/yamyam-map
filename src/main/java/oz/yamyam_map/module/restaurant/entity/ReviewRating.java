@@ -1,12 +1,14 @@
 package oz.yamyam_map.module.restaurant.entity;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
 public class ReviewRating {
 
 	private Long totalReviews;
 	private Long totalScore;
+	@Getter
 	private double averageScore;
 
 	// JPA를 적용하기 위해 기본 생성자 추가
