@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import oz.yamyam_map.common.BaseApiResponse;
+import oz.yamyam_map.module.auth.security.CustomUserDetails;
 import oz.yamyam_map.module.restaurant.dto.request.ReviewUploadReq;
 import oz.yamyam_map.module.restaurant.dto.response.RestaurantDetailRes;
 
@@ -13,6 +14,7 @@ public interface RestaurantControllerDocs {
 	@Operation(summary = "리뷰 등록", description = "맛집의 리뷰를 등록합니다.")
 	@ApiResponse(responseCode = "201", description = "요청이 성공했습니다.", useReturnTypeSchema = true)
 	BaseApiResponse<Void> uploadReview(
+		CustomUserDetails userDetails,
 		Long restaurantId,
 		ReviewUploadReq req
 	);
