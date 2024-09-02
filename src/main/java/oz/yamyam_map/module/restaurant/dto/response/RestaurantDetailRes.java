@@ -23,7 +23,7 @@ public class RestaurantDetailRes {
 		return RestaurantDetailRes.builder()
 			.id(restaurant.getId())
 			.name(restaurant.getName())
-			.businessType(restaurant.getBusinessType())
+			.businessType(restaurant.getRestaurantType())
 			.phoneNumber(restaurant.getPhoneNumber())
 			.pointX(restaurant.getLocation().getX()) // Point의 x 좌표
 			.pointY(restaurant.getLocation().getY()) // Point의 y 좌표
