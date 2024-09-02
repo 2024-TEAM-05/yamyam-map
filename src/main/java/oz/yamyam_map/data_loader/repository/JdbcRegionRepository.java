@@ -19,6 +19,7 @@ public class JdbcRegionRepository implements RegionRepository {
 	public static final String TRUNCATE_SQL = "TRUNCATE TABLE region";
 	public static final String INSERT_SQL = "INSERT INTO region (province, city_district, location) VALUES (?, ?, ST_GeomFromText(?))";
 	public static final String POINT_FORMAT = "POINT(%f %f)";
+
 	private final String jdbcUrl;
 	private final String jdbcUser;
 	private final String jdbcPassword;
