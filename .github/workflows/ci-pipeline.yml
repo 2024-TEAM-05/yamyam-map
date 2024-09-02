@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     steps:
       - name: 체크아웃
         uses: actions/checkout@v4
@@ -24,6 +27,14 @@ jobs:
         with:
           java-version: 17
           distribution: 'corretto'
+
+      - name: 테스트 DB를 위한 MySQL 설정
+        uses: samin/mysql-action@v1.3
+        with:
+          mysql user: oz
+          mysql password: password!
+          mysql database: yamyam-test
+          host port: 3337
 
       - name: 빌드 권한 부여
         run: chmod +x gradlew
