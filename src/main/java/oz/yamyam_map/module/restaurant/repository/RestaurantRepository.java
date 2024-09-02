@@ -17,15 +17,14 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 	 * - ST_Distance: 맛집과 좌표 간의 거리를 계산
 	 */
 	@Query("SELECT r FROM Restaurant r " +
-		"WHERE ST_DWithin(r.location, ST_MakePoint(:longitude, :latitude), :range) = true " +
+		"WHERE ST_Distance(r.location, ST_GeomFromText(CONCAT('POINT(', :latitude, ' ', :longitude, ')'), 4326)) <= :range " +
 		"ORDER BY " +
 		"CASE WHEN :sort = 'rating' THEN r.reviewRating.averageScore END DESC, " +
-		"CASE WHEN :sort = 'distance' THEN ST_Distance(r.location, ST_MakePoint(:longitude, :latitude)) END ASC")
+		"CASE WHEN :sort = 'distance' THEN ST_Distance(r.location, ST_GeomFromText(CONCAT('POINT(', :latitude, ' ', :longitude, ')'), 4326)) END ASC")
 	List<Restaurant> findRestaurantsByLocationAndSort(
 		@Param("latitude") double latitude,
 		@Param("longitude") double longitude,
 		@Param("range") double range,
-		@Param("sort") String sort,
-		Pageable pageable
+		@Param("sort") String sort
 	);
 }
