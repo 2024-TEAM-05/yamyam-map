@@ -54,8 +54,8 @@ public class RestaurantService {
 
 	public RestaurantListRes getRestaurants(RestaurantSearchReq req) {
 		List<Restaurant> restaurants = restaurantRepository.findRestaurantsByLocationAndSort(
-			req.getLatitude(), req.getLongitude(), req.getRange(), req.getSort(),
-			Pageable.unpaged()
+			req.getLatitude(), req.getLongitude(), req.getRange(), req.getSort()
+			// Pageable.unpaged()	// TODO: 페이징 처리
 		);
 
 		List<RestaurantSearchRes> restaurantResponse = restaurantMapper.toRestaurantDtoList(restaurants);
