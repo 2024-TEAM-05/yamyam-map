@@ -8,6 +8,7 @@ public class ReviewRating {
 
 	private Long totalReviews;
 	private Long totalScore;
+
 	@Getter
 	private double averageScore;
 

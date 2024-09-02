@@ -38,7 +38,7 @@ public class Restaurant extends BaseEntity {
 
 	private String phoneNumber;
 
-	@Column(nullable = false, columnDefinition = "GEOMETRY")
+	@Column(nullable = false, columnDefinition = "Point")
 	private Point location;
 
 	private String OldAddressFull;
@@ -48,9 +48,23 @@ public class Restaurant extends BaseEntity {
 	@Embedded
 	private ReviewRating reviewRating; // 리뷰 평점 데이터를 위한 VO
 
+	// 테스트 전용 생성자
+	protected Restaurant(String name, RestaurantType businessType, Point location, ReviewRating reviewRating) {
+		this.name = name;
+		this.businessType = businessType;
+		this.location = location;
+		this.reviewRating = reviewRating;
+	}
+
+	// 테스트 전용 팩토리 메서드
+	public static Restaurant createForTest(String name, RestaurantType businessType, Point location,
+		ReviewRating reviewRating) {
+		return new Restaurant(name, businessType, location, reviewRating);
+	}
+
 	public void uploadReview(Byte newRating) {
 		ReviewRating newReviewRating = reviewRating.createNewReviewRating(newRating);
 		this.reviewRating = newReviewRating;
-
 	}
+
 }
