@@ -58,6 +58,10 @@ public class RestaurantService {
 			// Pageable.unpaged()	// TODO: 페이징 처리
 		);
 
+		if (restaurants.isEmpty()) {
+			return new RestaurantListRes(List.of());
+		}
+
 		List<RestaurantSearchRes> restaurantResponse = restaurantMapper.toRestaurantDtoList(restaurants);
 		return new RestaurantListRes(restaurantResponse);
 	}
