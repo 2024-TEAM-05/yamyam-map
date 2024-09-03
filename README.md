@@ -217,12 +217,318 @@ flowchart TD
   
 </details>
 
+<details> 
+<summary>사용자 설정 업데이트 api Tech Spec</summary>
+    
+### **요약 (Summary)**
+    
+사용자의 위치 정보와 점심 추천 기능 설정을 업데이트하는 역할을 합니다.
+    
+### **목표 (Goals)**
+    
+사용자 위치 정보 업데이트
+        
+- 사용자의 위치 정보를 데이터베이스에 저장하여 위치 기반 맛집 추천 서비스의 정확성을 유지합니다.
+        
+점심 추천 기능 설정
+        
+- 사용자가 점심 추천 기능의 활성화 여부를 선택할 수 있도록 하여, 맞춤형 알림 서비스를 제공합니다.
+        
+데이터 유효성 검증
+        
+- 사용자가 입력한 위치 정보와 점심 추천 기능 설정의 유효성을 검증하여, 잘못된 입력이 서비스에 영향을 미치지 않도록 합니다.
+        
+보안 및 인증
+        
+- JWT를 사용하여 사용자 인증 및 권한을 검증하며, 인증된 사용자만이 자신의 설정을 업데이트, 조회할 수 있도록 합니다.
+        
+    
+### **목표가 아닌 것 (Non-Goals)**
+    
+- 사용자 프로필 관리
+        
+- 사용자 계정, 비밀번호 등 프로필 정보를 업데이트하는 기능이 아닙니다.
+        
+    
+### **계획 (Plan)**
+    
+데이터베이스 인터페이스 구현
+        
+- `MemberRepository`를 통해 사용자 정보를 조회할 수 있도록 구현합니다.
+        
+API 설계 및 구현
+        
+- JWT 인증 로직을 통해 요청자의 신원을 확인합니다.
+- 위치 정보와 점심 추천 기능 설정 값을 검증하는 로직을 구현합니다.
+- 검증된 데이터를 기반으로 사용자의 설정을 업데이트하는 로직 작성합니다.
+    
+    
+<details> 
+<summary>플로우 차트</summary>
+    
+```mermaid
+    graph TD
+        A[사용자 요청] --> B[JWT 인증 확인]
+        B -->|인증 실패| C[401 Unauthorized 반환]
+        B -->|인증 성공| D[데이터 유효성 검증]
+        D -->|유효성 실패| E[400 Bad Request 반환]
+        D -->|유효성 성공| F[데이터베이스 업데이트]
+        F --> G[200 OK 성공 응답 반환]
+    
+```
+</details>
+    
+<details> 
+<summary>클래스 다이어그램</summary>
+    
+```mermaid
+classDiagram
+        class Member {
+          +Long member_id
+          +String account
+          +String password
+          +Double latitude
+          +Double longitude
+          +Boolean receiveRecommendations
+          +Timestamp created_at
+          +Timestamp updated_at
+        }
+    
+    		class MemberService {
+    			+updateMemberSettings(lat: Double, lon: Double, receiveRecommendations: Boolean): void
+    		}
+    		
+    		class MemberRepository {
+          +findById(userId: Long): Member
+          +save(member: Member): void
+        }
+    
+        MemberService --> MemberRepository : uses
+        MemberService --> Member : updates
+```
+</details>
+    
+<details> 
+<summary>시퀀스 다이어그램</summary>
+    
+```mermaid
+sequenceDiagram
+        participant User
+        participant API
+        participant DB
+    
+        User->>API: 설정 업데이트 요청 (JWT 포함)
+        API->>API: JWT 유효성 검증
+        API-->>User: 인증 실패 (401 Unauthorized)
+        API->>API: 데이터 유효성 검증
+        API-->>User: 유효성 실패 (400 Bad Request)
+        API->>DB: 사용자 설정 업데이트
+        DB-->>API: 업데이트 성공
+        API-->>User: 성공 응답 (200 OK)
+    
+```
+</details>
+    
+<details> 
+<summary>API 설계</summary>
+    
+**Endpoint:** `PATCH /api/member/settings`
+    
+**요청 헤더:** `Authorization: bearer {JWT_TOKEN}`
+    
+**Request Body:**
+    
+```json
+    {
+      "lat": 37.5665,
+      "lon": 126.9780,
+      "receiveRecommendations": true
+    }
+```
+    
+**Response:**
+    
+- **200 OK:** 성공적으로 업데이트된 경우.
+        
+```json
+        {
+          "message": "요청이 성공했습니다."
+        }
+```
+        
+- **400 Bad Request:** 위도, 경도의 범위가 잘못된 경우
+        
+```json
+        {
+          "error": "위도 또는 경도의 범위가 잘못되었습니다."
+        }
+```
+        
+- **400 Bad Request:** 위도 혹은 경도 값이 누락된 경우
+        
+```json
+        {
+          "error": "위도와 경도는 모두 제공되어야 합니다."
+        }
+```
+        
+- **401 Unauthorized:** 인증되지 않은 사용자가 접근한 경우.
+        
+```json
+        {
+          "error": "인증 오류가 발생했습니다."
+        }
+```
+</details>
+    
+### **이외 고려 사항들 (Other Considerations)**
+    
+- 보안: JWT의 유효성 및 보안을 검토하며, 인증되지 않은 사용자의 접근을 방지합니다.
+- 에러 처리: 발생 가능한 에러 케이스에 대한 에러 메시지를 적절하게 반환할 수 있도록 합니다.
+    
+### **마일스톤 (Milestones)**
+    
+> ~ `8월 28일`: 요구사항 분석 <br>
+~ `8월 29일`: API 설계 및기본 구현 완료 <br>
+~ `8월 30일`: 테스트, 문서화
+>
+</details>
+
+
+<details>
+<summary>사용자 정보 api Tech Spec</summary>
+    
+### **요약 (Summary)**
+    
+사용자의 정보를 조회하여 계정, 위치 정보, 점심 추천 기능 활성화 여부를 확인할 수 있습니다.
+    
+### **목표 (Goals)**
+    
+- `패스워드` 를 제외한 모든 사용자 정보를 반환합니다.
+- 클라이언트에서 사용자 위, 경도 / 점심추천 기능 사용여부 를 사용하기 위해서 입니다.
+    
+### **계획 (Plan)**
+    
+데이터베이스 인터페이스 구현     
+- `MemberRepository`를 통해 사용자 정보를 조회할 수 있도록 구현합니다.
+        
+API 설계 및 구현      
+- JWT 인증 로직을 통해 요청자의 신원을 확인하고, 해당 사용자의 정보를 조회하여 반환합니다.
+    
+
+<details>
+<summary>플로우 차트 </summary>
+	
+```mermaid
+    graph TD
+	A[사용자 요청] --> B[JWT 인증 확인]
+	B -->|인증 실패| C[401 Unauthorized 반환]
+	B -->|인증 성공| D[사용자 정보 조회]
+	D --> E[200 OK 사용자 정보 반환]
+```
+</details>
+
+    
+
+<details>
+<summary>클래스 다이어그램</summary>
+    
+```mermaid
+classDiagram
+        class Member {
+          +Long id
+          +String username
+          +String password
+          +Double latitude
+          +Double longitude
+          +Boolean receiveRecommendations
+          +Timestamp created_at
+          +Timestamp updated_at
+        }
+    
+        class MemberService {
+          +getMemberDetail(): MemberDetailRes
+        }
+    
+        class MemberRepository {
+          +findById(memberId: Long): Member
+        }
+    
+        MemberService --> MemberRepository : uses
+        MemberService --> Member : retrieves
+    
+```
+</details>
+
+    
+
+<details>
+<summary>시퀀스 다이어그램</summary>
+    
+```mermaid
+sequenceDiagram
+        participant Member
+        participant API
+        participant DB
+    
+        Member->>API: 사용자 정보 요청 (JWT 포함)
+        API->>API: JWT 유효성 검증
+        API-->>Member: 인증 실패 (401 Unauthorized)
+        API->>DB: 사용자 정보 조회
+        DB-->>API: 사용자 정보 반환
+        API-->>Member: 사용자 정보 반환 (200 OK)
+    
+```
+</details>
+
+    
+
+<details>
+<summary>API 설계</summary>
+    
+**Endpoint:** `GET /api/member`
+    
+**요청 헤더:** `Authorization: bearer {JWT_TOKEN}`
+    
+**Response:**
+    
+- **200 OK:** 성공적으로 업데이트된 경우.
+        
+```json
+        {
+        	"memberId": 123,
+        	"account": "abc",
+          "latitude": 37.5665,
+          "longitude": 126.9780,
+          "receiveRecommendations": true
+        }
+```
+        
+- **401 Unauthorized:** 인증되지 않은 사용자가 접근한 경우.
+        
+```json
+        {
+          "error": "인증 오류가 발생했습니다."
+        }
+```
+</details>
+
+        
+    
+### **마일스톤 (Milestones)**
+    
+> ~ 8월 28일: 요구사항 분석 <br>
+~ 8월 29일: 기본 구현 완료 <br>
+~ 8월 30일: 테스트 및 문서화
+>
+</details>
+
 
 ## Skills
 
 언어 및 프레임워크: `Java 17`, `Spring Boot 3.x.x`
 
-데이터베이스: `Postgresql 16`
+데이터베이스: `MySQL`
 
 배포: `AWS EC2`, `Github Actions`
 
