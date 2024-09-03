@@ -220,7 +220,7 @@ flowchart TD
 </details>
 
 <details> 
-<summary>사용자 설정 업데이트 api Tech Spec</summary>
+<summary>사용자 설정 업데이트 API</summary>
     
 ### **요약 (Summary)**
     
@@ -398,7 +398,7 @@ sequenceDiagram
 
 
 <details>
-<summary>사용자 정보 api Tech Spec</summary>
+<summary>사용자 정보 API</summary>
     
 ### **요약 (Summary)**
     
