@@ -15,7 +15,7 @@ import oz.yamyam_map.common.enums.RestaurantType;
 public class RestaurantSearchRes {
 	private Long id;
 	private String name;
-	private RestaurantType businessType;
+	private RestaurantType restaurantType;
 	private Point location;
 	private double averageScore;
 
