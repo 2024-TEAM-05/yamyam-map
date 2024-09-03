@@ -11,7 +11,7 @@ import oz.yamyam_map.module.restaurant.entity.ReviewRating;
 public class RestaurantDetailRes {
 	private Long id;
 	private String name;
-	private RestaurantType businessType;
+	private RestaurantType restaurantType;
 	private String phoneNumber;
 	private double pointX;
 	private double pointY;
@@ -23,7 +23,7 @@ public class RestaurantDetailRes {
 		return RestaurantDetailRes.builder()
 			.id(restaurant.getId())
 			.name(restaurant.getName())
-			.businessType(restaurant.getRestaurantType())
+			.restaurantType(restaurant.getRestaurantType())
 			.phoneNumber(restaurant.getPhoneNumber())
 			.pointX(restaurant.getLocation().getX()) // Point의 x 좌표
 			.pointY(restaurant.getLocation().getY()) // Point의 y 좌표
