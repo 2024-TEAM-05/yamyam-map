@@ -23,7 +23,7 @@ public class SeoulDataPipelineScheduler {
 	public void runSeoulDataPipelineJob() {
 		try {
 			JobParameters jobParameters = new JobParametersBuilder()
-				.addLong("time", System.currentTimeMillis()) // 중복 실행 방지를 위한 unique 파라미터
+				.addLong("date", System.currentTimeMillis()) // 중복 실행 방지를 위한 unique 파라미터
 				.toJobParameters();
 
 			jobLauncher.run(seoulDataPipelineJob, jobParameters);
