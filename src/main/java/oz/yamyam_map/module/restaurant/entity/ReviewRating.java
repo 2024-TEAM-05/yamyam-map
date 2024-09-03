@@ -1,8 +1,10 @@
 package oz.yamyam_map.module.restaurant.entity;
 
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
 
 @Embeddable
+@Getter
 public class ReviewRating {
 
 	private Long totalReviews;
