@@ -27,5 +27,9 @@ public class RestaurantSearchReq {
 	
 	private String sort;
 
+	public String getSort() {
+		return (sort == null || sort.isEmpty()) ? "distance" : sort;
+	}
+
 	// TODO: 페이지네이션 관련 필드 추가
 }
