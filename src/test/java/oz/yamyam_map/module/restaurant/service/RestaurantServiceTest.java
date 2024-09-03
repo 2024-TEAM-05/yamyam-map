@@ -40,7 +40,7 @@ public class RestaurantServiceTest {
 	public void shouldReturnRestaurantsWhenValidRequest() {
 		// Given
 		Point location1 = GeoUtils.createPoint(126.9780, 37.5665);
-		Restaurant restaurant1 = Restaurant.createForTest("얌얌식당", RestaurantType.KOREAN_FOOD, location1,
+		Restaurant restaurant1 = Restaurant.of("얌얌식당", RestaurantType.KOREAN_FOOD, location1,
 			new ReviewRating(100L, 450L));
 		List<Restaurant> mockRestaurants = List.of(restaurant1);
 

@@ -48,18 +48,14 @@ public class Restaurant extends BaseEntity {
 	@Embedded
 	private ReviewRating reviewRating; // 리뷰 평점 데이터를 위한 VO
 
-	// 테스트 전용 생성자
-	protected Restaurant(String name, RestaurantType businessType, Point location, ReviewRating reviewRating) {
-		this.name = name;
-		this.businessType = businessType;
-		this.location = location;
-		this.reviewRating = reviewRating;
-	}
-
-	// 테스트 전용 팩토리 메서드
-	public static Restaurant createForTest(String name, RestaurantType businessType, Point location,
+	public static Restaurant of(String name, RestaurantType businessType, Point location,
 		ReviewRating reviewRating) {
-		return new Restaurant(name, businessType, location, reviewRating);
+		return Restaurant.builder()
+			.name(name)
+			.businessType(businessType)
+			.location(location)
+			.reviewRating(reviewRating)
+			.build();
 	}
 
 	public void uploadReview(Byte newRating) {

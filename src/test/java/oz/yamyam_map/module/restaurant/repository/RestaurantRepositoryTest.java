@@ -35,8 +35,8 @@ public class RestaurantRepositoryTest {
 		Point location1 = GeoUtils.createPoint(126.9780, 37.5665);
 		Point location2 = GeoUtils.createPoint(126.9781, 37.5666);
 
-		Restaurant restaurant1 = Restaurant.createForTest("맛나식당", RestaurantType.KOREAN_FOOD, location1, new ReviewRating(100L, 450L));
-		Restaurant restaurant2 = Restaurant.createForTest("얌얌식당", RestaurantType.WESTERN_FOOD, location2, new ReviewRating(50L, 250L));
+		Restaurant restaurant1 = Restaurant.of("맛나식당", RestaurantType.KOREAN_FOOD, location1, new ReviewRating(100L, 450L));
+		Restaurant restaurant2 = Restaurant.of("얌얌식당", RestaurantType.WESTERN_FOOD, location2, new ReviewRating(50L, 250L));
 
 		restaurantRepository.save(restaurant1);
 		restaurantRepository.save(restaurant2);
@@ -61,8 +61,8 @@ public class RestaurantRepositoryTest {
 		Point location1 = GeoUtils.createPoint(126.9780, 37.5665);
 		Point location2 = GeoUtils.createPoint(126.9781, 37.5666);
 
-		Restaurant restaurant1 = Restaurant.createForTest("맛나식당", RestaurantType.KOREAN_FOOD, location1, new ReviewRating(100L, 450L)); // 평점: 4.5
-		Restaurant restaurant2 = Restaurant.createForTest("얌얌식당", RestaurantType.WESTERN_FOOD, location2, new ReviewRating(50L, 250L)); // 평점: 5.0
+		Restaurant restaurant1 = Restaurant.of("맛나식당", RestaurantType.KOREAN_FOOD, location1, new ReviewRating(100L, 450L)); // 평점: 4.5
+		Restaurant restaurant2 = Restaurant.of("얌얌식당", RestaurantType.WESTERN_FOOD, location2, new ReviewRating(50L, 250L)); // 평점: 5.0
 
 		restaurantRepository.save(restaurant1);
 		restaurantRepository.save(restaurant2);
