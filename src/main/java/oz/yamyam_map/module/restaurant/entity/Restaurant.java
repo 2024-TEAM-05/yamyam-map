@@ -12,6 +12,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +21,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import oz.yamyam_map.common.entity.BaseEntity;
 import oz.yamyam_map.common.enums.RestaurantType;
+
 import oz.yamyam_map.common.util.GeoUtils;
+
+import oz.yamyam_map.module.region.entity.Region;
 
 @Entity
 @Getter
@@ -32,12 +37,16 @@ public class Restaurant extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@ManyToOne
+	@JoinColumn(name = "region_id", nullable = false)
+	private Region region;
+
 	@Column(nullable = false)
 	private String name;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private RestaurantType businessType;
+	private RestaurantType restaurantType;
 
 	private String phoneNumber;
 
@@ -52,11 +61,38 @@ public class Restaurant extends BaseEntity {
 	@Embedded
 	private ReviewRating reviewRating; // 리뷰 평점 데이터를 위한 VO
 
-	public static Restaurant of(String name, RestaurantType businessType, Point location,
+	public Restaurant updateRestaurant(Region region, String name, RestaurantType restaurantType, String phoneNumber,
+		Point location, String oldAddressFull, String roadAddressFull) {
+		this.region = region;
+		this.name = name;
+		this.restaurantType = restaurantType;
+		this.phoneNumber = phoneNumber;
+		this.location = location;
+		this.oldAddressFull = oldAddressFull;
+		this.roadAddressFull = roadAddressFull;
+		return this;
+	}
+
+	public static Restaurant of(Region region, String name, RestaurantType restaurantType, String phoneNumber,
+		Point location, String oldAddressFull, String roadAddressFull) {
+		return Restaurant.builder()
+			.region(region)
+			.name(name)
+			.restaurantType(restaurantType)
+			.phoneNumber(phoneNumber)
+			.location(location)
+			.oldAddressFull(oldAddressFull)
+			.roadAddressFull(roadAddressFull)
+			.reviewRating(new ReviewRating())
+			.build();
+	}
+
+	public static Restaurant of(String name, Region region, RestaurantType restaurantType, Point location,
 		ReviewRating reviewRating) {
 		return Restaurant.builder()
 			.name(name)
-			.businessType(businessType)
+			.region(region)
+			.restaurantType(restaurantType)
 			.location(location)
 			.reviewRating(reviewRating)
 			.build();
