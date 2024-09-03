@@ -57,7 +57,7 @@ public class RestaurantService {
 			new TypeReference<Restaurant>() {
 			});
 		if (cachedRestaurant != null) {
-			log.info("{}번 맛집을 데이터를 캐시에서 가져옵니다.", restaurantId);
+			log.info("{}번 맛집 데이터를 캐시에서 가져옵니다.", restaurantId);
 			return RestaurantDetailRes.from(cachedRestaurant);
 		}
 
