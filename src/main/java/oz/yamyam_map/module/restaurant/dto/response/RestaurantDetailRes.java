@@ -1,5 +1,7 @@
 package oz.yamyam_map.module.restaurant.dto.response;
 
+import org.locationtech.jts.geom.Point;
+
 import lombok.Builder;
 import lombok.Getter;
 import oz.yamyam_map.common.enums.RestaurantType;
@@ -13,8 +15,7 @@ public class RestaurantDetailRes {
 	private String name;
 	private RestaurantType businessType;
 	private String phoneNumber;
-	private double pointX;
-	private double pointY;
+	private Point location;
 	private String oldAddressFull;
 	private String roadAddressFull;
 	private ReviewRating reviewRating;
@@ -25,8 +26,7 @@ public class RestaurantDetailRes {
 			.name(restaurant.getName())
 			.businessType(restaurant.getBusinessType())
 			.phoneNumber(restaurant.getPhoneNumber())
-			.pointX(restaurant.getLocation().getX()) // Point의 x 좌표
-			.pointY(restaurant.getLocation().getY()) // Point의 y 좌표
+			.location(restaurant.getLocation())
 			.oldAddressFull(restaurant.getOldAddressFull())
 			.roadAddressFull(restaurant.getRoadAddressFull())
 			.reviewRating(restaurant.getReviewRating())
