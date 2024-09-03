@@ -45,7 +45,7 @@ public class Restaurant extends BaseEntity {
 
 	private String phoneNumber;
 
-	@Column(nullable = false, columnDefinition = "GEOMETRY")
+	@Column(nullable = false, columnDefinition = "Point")
 	private Point location;
 
 	private String oldAddressFull;
@@ -80,10 +80,20 @@ public class Restaurant extends BaseEntity {
 			.reviewRating(new ReviewRating())
 			.build();
 	}
-
+  
+  public static Restaurant of(String name, RestaurantType restaurantType, Point location,
+		ReviewRating reviewRating) {
+		return Restaurant.builder()
+			.name(name)
+			.restaurantType(restaurantType)
+			.location(location)
+			.reviewRating(reviewRating)
+			.build();
+	}
+  
 	public void uploadReview(Byte newRating) {
 		ReviewRating newReviewRating = reviewRating.createNewReviewRating(newRating);
 		this.reviewRating = newReviewRating;
-
 	}
+
 }

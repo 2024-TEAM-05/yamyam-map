@@ -209,3 +209,4 @@ application.yml
 **/src/main/generated/**
 !/src/test/resources/application.yml
 mysql_data
+.env

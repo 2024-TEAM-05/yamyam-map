@@ -1,5 +1,9 @@
 package oz.yamyam_map.module.restaurant.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,8 +13,11 @@ import oz.yamyam_map.exception.custom.BusinessException;
 import oz.yamyam_map.exception.custom.DataNotFoundException;
 import oz.yamyam_map.module.member.entity.Member;
 import oz.yamyam_map.module.member.repository.MemberRepository;
+import oz.yamyam_map.module.restaurant.dto.request.RestaurantSearchReq;
 import oz.yamyam_map.module.restaurant.dto.request.ReviewUploadReq;
 import oz.yamyam_map.module.restaurant.dto.response.RestaurantDetailRes;
+import oz.yamyam_map.module.restaurant.dto.response.RestaurantListRes;
+import oz.yamyam_map.module.restaurant.dto.response.RestaurantSearchRes;
 import oz.yamyam_map.module.restaurant.entity.Restaurant;
 import oz.yamyam_map.module.restaurant.entity.Review;
 import oz.yamyam_map.module.restaurant.repository.RestaurantRepository;
@@ -23,6 +30,7 @@ public class RestaurantService {
 	private final ReviewRepository reviewRepository;
 	private final MemberRepository memberRepository;
 	private final RestaurantRepository restaurantRepository;
+
 
 	@Transactional
 	public void uploadReview(Long memberId, Long restaurantId, ReviewUploadReq req) {
@@ -43,5 +51,28 @@ public class RestaurantService {
 		Restaurant restaurant = restaurantRepository.findById(restaurantId)
 			.orElseThrow(() -> new DataNotFoundException(StatusCode.RESTAURANT_NOT_FOUND));
 		return RestaurantDetailRes.from(restaurant);
+	}
+
+	public RestaurantListRes getRestaurants(RestaurantSearchReq req) {
+		List<Restaurant> restaurants = restaurantRepository.findRestaurantsByLocationAndSort(
+			req.getLatitude(), req.getLongitude(), req.getRange(), req.getSort()
+			// Pageable.unpaged()	// TODO: 페이징 처리
+		);
+
+		if (restaurants.isEmpty()) {
+			return RestaurantListRes.ofEmpty();
+		}
+
+		List<RestaurantSearchRes> restaurantResponse = restaurants.stream()
+			.map(restaurant -> RestaurantSearchRes.builder()
+				.id(restaurant.getId())
+				.name(restaurant.getName())
+				.businessType(restaurant.getBusinessType())
+				.location(restaurant.getLocation())
+				.averageScore(restaurant.getReviewRating().getAverageScore())
+				.build())
+			.collect(Collectors.toList());
+
+		return RestaurantListRes.of(restaurantResponse);
 	}
 }
