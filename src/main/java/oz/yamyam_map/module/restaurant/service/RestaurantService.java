@@ -2,6 +2,8 @@ package oz.yamyam_map.module.restaurant.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,16 +55,17 @@ public class RestaurantService {
 	}
 
 	public RestaurantListRes getRestaurants(RestaurantSearchReq req) {
-		List<Restaurant> restaurants = restaurantRepository.findRestaurantsByLocationAndSort(
-			req.getLatitude(), req.getLongitude(), req.getRange(), req.getSort()
-			// Pageable.unpaged()	// TODO: 페이징 처리
+		Pageable pageable = PageRequest.of(req.getPage(), req.getLimit());
+
+		Page<Restaurant> restaurants = restaurantRepository.findRestaurantsByLocationAndSort(
+			req.getLatitude(), req.getLongitude(), req.getRange(), req.getSort(), pageable
 		);
 
 		if (restaurants.isEmpty()) {
-			return new RestaurantListRes(List.of());
+			return new RestaurantListRes(0, 0, List.of());
 		}
 
-		List<RestaurantSearchRes> restaurantResponse = restaurantMapper.toRestaurantDtoList(restaurants);
-		return new RestaurantListRes(restaurantResponse);
+		List<RestaurantSearchRes> restaurantResponse = restaurantMapper.toRestaurantDtoList(restaurants.getContent());
+		return new RestaurantListRes(restaurants.getTotalElements(), restaurants.getTotalPages(), restaurantResponse);
 	}
 }
