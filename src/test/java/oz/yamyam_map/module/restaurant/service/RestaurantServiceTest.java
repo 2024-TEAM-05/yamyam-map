@@ -1,5 +1,8 @@
 package oz.yamyam_map.module.restaurant.service;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -9,19 +12,15 @@ import org.locationtech.jts.geom.Point;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Pageable;
 
 import oz.yamyam_map.common.enums.RestaurantType;
 import oz.yamyam_map.common.util.GeoUtils;
+import oz.yamyam_map.module.region.entity.Region;
 import oz.yamyam_map.module.restaurant.dto.request.RestaurantSearchReq;
 import oz.yamyam_map.module.restaurant.dto.response.RestaurantListRes;
-import oz.yamyam_map.module.restaurant.dto.response.RestaurantSearchRes;
 import oz.yamyam_map.module.restaurant.entity.Restaurant;
 import oz.yamyam_map.module.restaurant.entity.ReviewRating;
 import oz.yamyam_map.module.restaurant.repository.RestaurantRepository;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class RestaurantServiceTest {
@@ -37,7 +36,7 @@ public class RestaurantServiceTest {
 	public void shouldReturnRestaurantsWhenValidRequest() {
 		// Given
 		Point location1 = GeoUtils.createPoint(126.9780, 37.5665);
-		Restaurant restaurant1 = Restaurant.of("얌얌식당", RestaurantType.KOREAN_FOOD, location1,
+		Restaurant restaurant1 = Restaurant.of("얌얌식당", Region.builder().build(), RestaurantType.KOREAN_FOOD, location1,
 			new ReviewRating(100L, 450L));
 		List<Restaurant> mockRestaurants = List.of(restaurant1);
 

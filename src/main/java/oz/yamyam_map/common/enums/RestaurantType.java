@@ -1,5 +1,8 @@
 package oz.yamyam_map.common.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum RestaurantType {
 	KOREAN_FOOD("한식"),
 	CHINESE_FOOD("중식"),

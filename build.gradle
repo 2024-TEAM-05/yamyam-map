@@ -62,13 +62,16 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // Argon2
-    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
 
     // Hibernate Spatial
     implementation 'org.hibernate.orm:hibernate-spatial:6.5.2.Final'
 
     // localdatetime 처리
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+
+    // Apache Commons CSV
+    implementation 'org.apache.commons:commons-csv:1.11.0'
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

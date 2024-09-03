@@ -1,8 +1,9 @@
 package oz.yamyam_map.module.restaurant.repository;
 
+import java.util.Optional;
+
 import java.util.List;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,10 @@ import org.springframework.data.repository.query.Param;
 import oz.yamyam_map.module.restaurant.entity.Restaurant;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+  
+	Optional<Restaurant> findByNameAndOldAddressFull(String name, String oldAddressFull);
+
+	Optional<Restaurant> findByNameAndRoadAddressFull(String name, String roadAddressFull);
 
 	/**
 	 * Hibernate Spatial

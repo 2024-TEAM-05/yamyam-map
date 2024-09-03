@@ -93,7 +93,7 @@ public class RestaurantService {
 			.map(restaurant -> RestaurantSearchRes.builder()
 				.id(restaurant.getId())
 				.name(restaurant.getName())
-				.businessType(restaurant.getBusinessType())
+				.restaurantType(restaurant.getRestaurantType())
 				.location(restaurant.getLocation())
 				.averageScore(restaurant.getReviewRating().getAverageScore())
 				.build())

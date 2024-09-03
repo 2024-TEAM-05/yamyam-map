@@ -1,5 +1,7 @@
 package oz.yamyam_map.module.restaurant.repository;
 
+import static org.assertj.core.api.Assertions.*;
+
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -14,10 +16,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import oz.yamyam_map.common.enums.RestaurantType;
 import oz.yamyam_map.common.util.GeoUtils;
+import oz.yamyam_map.module.region.entity.Region;
+import oz.yamyam_map.module.region.repository.RegionRepository;
 import oz.yamyam_map.module.restaurant.entity.Restaurant;
 import oz.yamyam_map.module.restaurant.entity.ReviewRating;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -28,6 +30,9 @@ public class RestaurantRepositoryTest {
 	@Autowired
 	private RestaurantRepository restaurantRepository;
 
+	@Autowired
+	private RegionRepository regionRepository;
+
 	@Test
 	@DisplayName("반경 맛집 거리순 정렬")
 	public void shouldFindRestaurantsByDistance() {
@@ -35,8 +40,17 @@ public class RestaurantRepositoryTest {
 		Point location1 = GeoUtils.createPoint(126.9780, 37.5665);
 		Point location2 = GeoUtils.createPoint(126.9781, 37.5666);
 
-		Restaurant restaurant1 = Restaurant.of("맛나식당", RestaurantType.KOREAN_FOOD, location1, new ReviewRating(100L, 450L));
-		Restaurant restaurant2 = Restaurant.of("얌얌식당", RestaurantType.WESTERN_FOOD, location2, new ReviewRating(50L, 250L));
+		Region region = Region.builder()
+			.province("서울")
+			.cityDistrict("강남구")
+			.location(location1)
+			.build();
+		regionRepository.save(region);
+
+		Restaurant restaurant1 = Restaurant.of("맛나식당", region, RestaurantType.KOREAN_FOOD, location1,
+			new ReviewRating(100L, 450L));
+		Restaurant restaurant2 = Restaurant.of("얌얌식당", region, RestaurantType.WESTERN_FOOD, location2,
+			new ReviewRating(50L, 250L));
 
 		restaurantRepository.save(restaurant1);
 		restaurantRepository.save(restaurant2);
@@ -56,13 +70,22 @@ public class RestaurantRepositoryTest {
 
 	@Test
 	@DisplayName("반경 맛집 평점순 정렬")
-	public void shouldFindRestaurantsByRating(){
+	public void shouldFindRestaurantsByRating() {
 		// given
 		Point location1 = GeoUtils.createPoint(126.9780, 37.5665);
 		Point location2 = GeoUtils.createPoint(126.9781, 37.5666);
 
-		Restaurant restaurant1 = Restaurant.of("맛나식당", RestaurantType.KOREAN_FOOD, location1, new ReviewRating(100L, 450L)); // 평점: 4.5
-		Restaurant restaurant2 = Restaurant.of("얌얌식당", RestaurantType.WESTERN_FOOD, location2, new ReviewRating(50L, 250L)); // 평점: 5.0
+		Region region = Region.builder()
+			.province("서울")
+			.cityDistrict("강남구")
+			.location(location1)
+			.build();
+		regionRepository.save(region);
+
+		Restaurant restaurant1 = Restaurant.of("맛나식당", region, RestaurantType.KOREAN_FOOD, location1,
+			new ReviewRating(100L, 450L)); // 평점: 4.5
+		Restaurant restaurant2 = Restaurant.of("얌얌식당", region, RestaurantType.WESTERN_FOOD, location2,
+			new ReviewRating(50L, 250L)); // 평점: 5.0
 
 		restaurantRepository.save(restaurant1);
 		restaurantRepository.save(restaurant2);

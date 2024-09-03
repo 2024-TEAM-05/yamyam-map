@@ -13,7 +13,7 @@ import oz.yamyam_map.module.restaurant.entity.ReviewRating;
 public class RestaurantDetailRes {
 	private Long id;
 	private String name;
-	private RestaurantType businessType;
+	private RestaurantType restaurantType;
 	private String phoneNumber;
 	private Point location;
 	private String oldAddressFull;
@@ -24,7 +24,7 @@ public class RestaurantDetailRes {
 		return RestaurantDetailRes.builder()
 			.id(restaurant.getId())
 			.name(restaurant.getName())
-			.businessType(restaurant.getBusinessType())
+			.restaurantType(restaurant.getRestaurantType())
 			.phoneNumber(restaurant.getPhoneNumber())
 			.location(restaurant.getLocation())
 			.oldAddressFull(restaurant.getOldAddressFull())
