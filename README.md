@@ -202,7 +202,7 @@ flowchart TD
 ### **이외 고려 사항들 (Other Considerations)**
 
 - 엔드포인트 정의 (경로와 HTTP 메서드)
-    - GET /api/restaurants/search
+    - GET /api/restaurants
         - `lat`, `lon`, `range`, `sort`, `page`
         - sort - distance/rating
 
