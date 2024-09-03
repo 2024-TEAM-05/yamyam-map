@@ -15,6 +15,7 @@ jobs:
       DB_URL: ${{ secrets.DB_URL }}
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      AUTH_KEY: ${{ secrets.AUTH_KEY }}
     steps:
       - name: 체크아웃
         uses: actions/checkout@v4
