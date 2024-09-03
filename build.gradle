@@ -70,6 +70,10 @@ dependencies {
     // localdatetime 처리
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
 
+
+    // localdatetime 처리
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+
     // Apache Commons CSV
     implementation 'org.apache.commons:commons-csv:1.11.0'
 

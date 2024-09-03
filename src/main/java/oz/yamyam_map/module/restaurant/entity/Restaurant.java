@@ -21,6 +21,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import oz.yamyam_map.common.entity.BaseEntity;
 import oz.yamyam_map.common.enums.RestaurantType;
+
+import oz.yamyam_map.common.util.GeoUtils;
+
 import oz.yamyam_map.module.region.entity.Region;
 import oz.yamyam_map.common.util.GeoUtils;
 
