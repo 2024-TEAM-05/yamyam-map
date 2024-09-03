@@ -2,6 +2,8 @@ package oz.yamyam_map.module.restaurant.entity;
 
 import org.locationtech.jts.geom.Point;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import oz.yamyam_map.common.entity.BaseEntity;
 import oz.yamyam_map.common.enums.RestaurantType;
+import oz.yamyam_map.common.util.GeoUtils;
 
 @Entity
 @Getter
@@ -39,11 +42,12 @@ public class Restaurant extends BaseEntity {
 	private String phoneNumber;
 
 	@Column(nullable = false, columnDefinition = "GEOMETRY")
+	@JsonDeserialize(using = GeoUtils.PointDeserializer.class)
 	private Point location;
 
-	private String OldAddressFull;
+	private String oldAddressFull;
 
-	private String RoadAddressFull;
+	private String roadAddressFull;
 
 	@Embedded
 	private ReviewRating reviewRating; // 리뷰 평점 데이터를 위한 VO
