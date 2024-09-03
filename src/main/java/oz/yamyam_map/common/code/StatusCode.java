@@ -36,7 +36,9 @@ public enum StatusCode {
 	/**
 	 * 500 번대 CODE
 	 **/
-	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다.");
+	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
+	REGION_NOT_FOUND_BATCH_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터에서 운영 테이블로 process 하는 과정에서 시군구 매핑 전처리에 실패하였습니다."),
+	RESTAURANT_NOT_FOUND_BATCH_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "데이터에서 운영 테이블로 process 하는 과정에서 식당 명과 주소에 해당하는 맛집을 찾지 못했습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

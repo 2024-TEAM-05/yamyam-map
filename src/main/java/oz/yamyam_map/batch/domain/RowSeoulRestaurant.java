@@ -13,6 +13,12 @@ import lombok.NoArgsConstructor;
 import oz.yamyam_map.batch.dto.SeoulRestaurantDto;
 import oz.yamyam_map.common.entity.BaseEntity;
 
+/**
+ * 서울시 일반음식점 인허가 정보 데이터
+ * API 링크: https://data.seoul.go.kr/dataList/OA-16094/S/1/datasetView.do
+ * Github Issues 34 확인
+ **/
+
 @Entity
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
