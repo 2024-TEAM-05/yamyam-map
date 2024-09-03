@@ -3,7 +3,7 @@ package oz.yamyam_map.batch.util;
 public class AddressUtils {
 	public static String extractCityDistrict(String address) {
 		// 주소가 null 또는 빈 문자열인지 확인
-		if (address == null || address.trim().isEmpty()) {
+		if (address == null || address.isBlank()) {
 			return null;
 		}
 
