@@ -3,7 +3,7 @@ spring:
     name: yamyam-map
 
   datasource:
-    url:  ${DB_URL}
+    url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -31,8 +31,11 @@ jwt:
 
 batch:
   seoul:
-    auth_key: ${AUTH_KEY}
-    chunk_size: 100
+    host: http://openapi.seoul.go.kr:8088
+    serviceName: LOCALDATA_072404
+    responseFormat: json
+    authKey: ${AUTH_KEY}
+    chunkSize: 100
 
 logging:
   level:
