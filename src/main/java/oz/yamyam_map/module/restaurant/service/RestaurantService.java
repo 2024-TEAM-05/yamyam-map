@@ -6,6 +6,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import oz.yamyam_map.common.code.StatusCode;
@@ -48,22 +51,24 @@ public class RestaurantService {
 	}
 
 	public RestaurantDetailRes getRestaurantDetails(Long restaurantId) {
+		ObjectMapper objectMapper = new ObjectMapper();
 		String cacheKey = CACHE_PREFIX + restaurantId;
-		Restaurant cachedRestaurant = (Restaurant)redisTemplate.opsForValue().get(cacheKey);
-
+		Restaurant cachedRestaurant = objectMapper.convertValue(redisTemplate.opsForValue().get(cacheKey),
+			new TypeReference<Restaurant>() {
+			});
 		if (cachedRestaurant != null) {
-			log.info("{}번 맛집을 캐싱합니다.", restaurantId);
+			log.info("{}번 맛집을 데이터를 캐시에서 가져옵니다.", restaurantId);
 			return RestaurantDetailRes.from(cachedRestaurant);
 		}
 
-		log.info("캐시에 존재하지 않아 DB에서 조회합니다.");
+		log.info("{}번 맛집 데이터가 캐시에 존재하지 않아 DB에서 조회합니다.", restaurantId);
 		Restaurant restaurant = restaurantRepository.findById(restaurantId)
 			.orElseThrow(() -> new DataNotFoundException(StatusCode.RESTAURANT_NOT_FOUND));
 
 		if (restaurant.getReviewRating().getTotalReviews() >= 10) {
-			log.info("{}번 맛집을 캐시에 저장 작업을 시작합니다.", restaurantId);
+			log.info("{}번 맛집 캐시 저장 작업을 시작합니다.", restaurantId);
 			redisTemplate.opsForValue().set(cacheKey, restaurant, TTL, TimeUnit.HOURS);
-			log.info("{}번 맛집을 캐시에 저장 작업을 완료했습니다.", restaurantId);
+			log.info("{}번 맛집 캐시 저장 작업을 완료했습니다.", restaurantId);
 		}
 
 		return RestaurantDetailRes.from(restaurant);
