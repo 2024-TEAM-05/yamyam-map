@@ -15,9 +15,17 @@ public class RowSeoulDataProcessor implements ItemProcessor<SeoulRestaurantDto, 
 	private final RowSeoulRestaurantRepository rowSeoulRestaurantRepository;
 
 	@Override
-	public RowSeoulRestaurant process(SeoulRestaurantDto item) throws Exception {
-		// TODO: 기존 row table을 조회한 뒤 변경/추가가 발생했는지 확인 (기존과 그대로라면 null을 반환하면 skip)
-		// TODO: SeoulRestaurantDto를 RowSeoulRestaurant로 변환
-		return null;
+	public RowSeoulRestaurant process(SeoulRestaurantDto item) {
+		return rowSeoulRestaurantRepository.findByMgtno(item.mgtno())
+			.map(existingRecord -> updateIfChanged(existingRecord, item))
+			.orElseGet(() -> RowSeoulRestaurant.of(item));
+	}
+
+	private RowSeoulRestaurant updateIfChanged(RowSeoulRestaurant existingRecord, SeoulRestaurantDto newItem) {
+		if (existingRecord.hasNotChanged(newItem)) {
+			return null; // 변경 사항이 없기 때문에 SKIP
+		}
+
+		return existingRecord.update(newItem);
 	}
 }
