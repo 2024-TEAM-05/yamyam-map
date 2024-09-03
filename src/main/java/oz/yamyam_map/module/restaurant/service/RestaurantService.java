@@ -1,6 +1,7 @@
 package oz.yamyam_map.module.restaurant.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class RestaurantService {
 	private final ReviewRepository reviewRepository;
 	private final MemberRepository memberRepository;
 	private final RestaurantRepository restaurantRepository;
-	private final RestaurantMapper restaurantMapper;
+
 
 	@Transactional
 	public void uploadReview(Long memberId, Long restaurantId, ReviewUploadReq req) {
@@ -59,10 +60,19 @@ public class RestaurantService {
 		);
 
 		if (restaurants.isEmpty()) {
-			return new RestaurantListRes(List.of());
+			return RestaurantListRes.ofEmpty();
 		}
 
-		List<RestaurantSearchRes> restaurantResponse = restaurantMapper.toRestaurantDtoList(restaurants);
-		return new RestaurantListRes(restaurantResponse);
+		List<RestaurantSearchRes> restaurantResponse = restaurants.stream()
+			.map(restaurant -> RestaurantSearchRes.builder()
+				.id(restaurant.getId())
+				.name(restaurant.getName())
+				.businessType(restaurant.getBusinessType())
+				.location(restaurant.getLocation())
+				.averageScore(restaurant.getReviewRating().getAverageScore())
+				.build())
+			.collect(Collectors.toList());
+
+		return RestaurantListRes.of(restaurantResponse);
 	}
 }

@@ -29,9 +29,6 @@ public class RestaurantServiceTest {
 	@Mock
 	private RestaurantRepository restaurantRepository;
 
-	@Mock
-	private RestaurantMapper restaurantMapper;
-
 	@InjectMocks
 	private RestaurantService restaurantService;
 
@@ -58,10 +55,6 @@ public class RestaurantServiceTest {
 			request.getSort()
 			// Pageable.unpaged()
 		)).thenReturn(mockRestaurants);
-
-		//
-		when(restaurantMapper.toRestaurantDtoList(mockRestaurants))
-			.thenReturn(List.of(new RestaurantSearchRes(1L, "얌얌식당", RestaurantType.KOREAN_FOOD, location1, 4.5)));
 
 		// When
 		RestaurantListRes result = restaurantService.getRestaurants(request);
