@@ -48,7 +48,7 @@ public class SeoulDataProcessor implements ItemProcessor<RowSeoulRestaurant, Res
 		RestaurantType restaurantType = RestaurantTypeMapper.from(item.getUptaenm());
 
 		// 4. 시군구 매핑
-		Region region = getRegionByAddress(address);
+		Region region = findRegionByAddress(address);
 		if (region == null) {
 			log.error("SeoulDataProcessor - 해당 시군구를 Region 엔티티에서 찾을 수 없습니다.[ 관리번호: {}, 주소: {} ]", item.getMgtno(),
 				address);
@@ -88,7 +88,7 @@ public class SeoulDataProcessor implements ItemProcessor<RowSeoulRestaurant, Res
 	}
 
 	// 주소에서 서울 / 군구 인스턴스 가져오는 메서드
-	private Region getRegionByAddress(String item) {
+	private Region findRegionByAddress(String item) {
 		String cityDistrict = AddressUtils.extractCityDistrict(item);
 		return regionRepository.findByProvinceAndCityDistrict(SEOUL, cityDistrict)
 			.orElse(null);
@@ -96,7 +96,7 @@ public class SeoulDataProcessor implements ItemProcessor<RowSeoulRestaurant, Res
 
 	// 위, 경도 없는 경우 시군구로 Point 반환하는 메서드
 	private Point getXYSafety(String x, String y, Region region) {
-		if (x.isEmpty() || x.isBlank() || y.isEmpty() || y.isBlank()) {
+		if (x.isBlank() || y.isBlank()) {
 			return region.getLocation();
 		}
 
