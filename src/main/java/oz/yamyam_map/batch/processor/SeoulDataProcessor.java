@@ -40,8 +40,12 @@ public class SeoulDataProcessor implements ItemProcessor<RowSeoulRestaurant, Res
 		Restaurant restaurant = findExistingRestaurant(item.getTrdstatenm(), address);
 
 		// 2. 폐업인 경우 삭제
-		if (isRestaurantClosed(item, restaurant)) {
-			return null;
+		if (isRestaurantClosed(item)) {
+			if (restaurant != null) {
+				restaurantRepository.delete(restaurant);
+			} else {
+				return null;
+			}
 		}
 
 		// 3. 업태구분 설정
@@ -77,14 +81,8 @@ public class SeoulDataProcessor implements ItemProcessor<RowSeoulRestaurant, Res
 	}
 
 	// 폐업 여부 확인하는 메서드
-	private boolean isRestaurantClosed(RowSeoulRestaurant item, Restaurant restaurant) {
-		if (Objects.equals(item.getDtlstatenm(), RestaurantSalesType.CLOSED.name())) {
-			if (restaurant != null) {
-				restaurantRepository.delete(restaurant);
-			}
-			return true;
-		}
-		return false;
+	private boolean isRestaurantClosed(RowSeoulRestaurant item) {
+		return Objects.equals(item.getDtlstatenm(), RestaurantSalesType.CLOSED.name());
 	}
 
 	// 주소에서 서울 / 군구 인스턴스 가져오는 메서드
