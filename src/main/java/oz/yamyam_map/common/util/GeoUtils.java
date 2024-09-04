@@ -8,6 +8,10 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
@@ -28,7 +32,6 @@ public class GeoUtils {
 		return point;
 	}
 
-
 	/**
 	 * 위, 경도 소수점 6자리만 들어가도록 설정하는 메서드
 	 **/
@@ -46,6 +49,23 @@ public class GeoUtils {
 			gen.writeNumberField("x", roundToSixDecimals(value.getX()));
 			gen.writeNumberField("y", roundToSixDecimals(value.getY()));
 			gen.writeEndObject();
+		}
+	}
+
+	/**
+	 * JSON을 Point 객체로 역직렬화하는 메서드 (redis에서 데이터를 가져올 때 필요)
+	 **/
+	public static class PointDeserializer extends JsonDeserializer<Point> {
+		private final GeometryFactory geometryFactory = new GeometryFactory();
+
+		@Override
+		public Point deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
+			JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+
+			double x = node.get("x").asDouble();
+			double y = node.get("y").asDouble();
+
+			return geometryFactory.createPoint(new Coordinate(x, y));
 		}
 	}
 }
