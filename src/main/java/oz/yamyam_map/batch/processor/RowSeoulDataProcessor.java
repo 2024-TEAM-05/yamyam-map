@@ -1,5 +1,7 @@
 package oz.yamyam_map.batch.processor;
 
+import java.util.Objects;
+
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +24,7 @@ public class RowSeoulDataProcessor implements ItemProcessor<SeoulRestaurantDto, 
 	}
 
 	private RowSeoulRestaurant updateIfChanged(RowSeoulRestaurant existingRecord, SeoulRestaurantDto newItem) {
-		if (existingRecord.hasNotChanged(newItem)) {
+		if (Objects.equals(existingRecord, RowSeoulRestaurant.of(newItem))) {
 			return null; // 변경 사항이 없기 때문에 SKIP
 		}
 
