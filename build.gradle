@@ -67,6 +67,13 @@ dependencies {
     // Hibernate Spatial
     implementation 'org.hibernate.orm:hibernate-spatial:6.5.2.Final'
 
+    // localdatetime 처리
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+
+
+    // localdatetime 처리
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+
     // Apache Commons CSV
     implementation 'org.apache.commons:commons-csv:1.11.0'
 
