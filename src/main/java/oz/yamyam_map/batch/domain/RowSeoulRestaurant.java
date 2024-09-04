@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import oz.yamyam_map.batch.dto.SeoulRestaurantDto;
@@ -19,6 +20,7 @@ import oz.yamyam_map.common.entity.BaseEntity;
 @Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class RowSeoulRestaurant extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,6 +115,7 @@ public class RowSeoulRestaurant extends BaseEntity {
 
 	private String homepage; // 홈페이지
 
+	@EqualsAndHashCode.Include
 	private String hash; // 변경 감지를 위한 해시값
 
 	public static RowSeoulRestaurant of(SeoulRestaurantDto dto) {
@@ -121,10 +124,6 @@ public class RowSeoulRestaurant extends BaseEntity {
 
 	public RowSeoulRestaurant update(SeoulRestaurantDto dto) {
 		return buildFromDto(this.id, dto);
-	}
-
-	public boolean hasNotChanged(SeoulRestaurantDto newItem) {
-		return hash.equals(calculateHash(newItem));
 	}
 
 	private static RowSeoulRestaurant buildFromDto(Long id, SeoulRestaurantDto dto) {
@@ -174,7 +173,6 @@ public class RowSeoulRestaurant extends BaseEntity {
 			.jtupsoasgnno(dto.jtupsoasgnno())
 			.jtupsomainedf(dto.jtupsomainedf())
 			.homepage(dto.homepage())
-			.hash(calculateHash(dto))
 			.build();
 	}
 
