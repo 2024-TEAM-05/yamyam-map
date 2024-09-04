@@ -41,8 +41,7 @@ jobs:
       - name: Start Redis
         uses: supercharge/redis-github-action@1.1.0
         with:
-          port: 6379
-          version: latest
+          redis-version: latest
 
       - name: 빌드 권한 부여
         run: chmod +x gradlew
