@@ -1,5 +1,9 @@
 package oz.yamyam_map.module.region.entity;
 
+import org.locationtech.jts.geom.Point;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,8 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import org.locationtech.jts.geom.Point;
+import oz.yamyam_map.common.util.GeoUtils;
 
 @Entity
 @Getter
@@ -31,6 +34,7 @@ public class Region {
 	private String cityDistrict;
 
 	@Column(nullable = false, columnDefinition = "Point")
+	@JsonDeserialize(using = GeoUtils.PointDeserializer.class)
 	private Point location;
 
 }

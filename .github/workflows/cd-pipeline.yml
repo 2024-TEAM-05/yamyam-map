@@ -16,6 +16,8 @@ jobs:
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       AUTH_KEY: ${{ secrets.AUTH_KEY }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
     steps:
       - name: 체크아웃
         uses: actions/checkout@v4
