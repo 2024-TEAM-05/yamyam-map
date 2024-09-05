@@ -601,7 +601,161 @@ graph TD
 >
 
 </details>
+<details> 
+<summary>데이터 파이프라인</summary>
 
+# **요약 (Summary)**
+
+맛집 데이터를 수집하기 위한 데이터 파이프라인을 작성합니다.
+
+API 호출로 동작되는 기능이 아닌 스케쥴러를 통해 매 시간 실행되는 기능들입니다.
+
+# **목표 (Goals)**
+
+- 서울시 일반음식점 인허가 정보 OpenAPI를 통해 데이터를 수집합니다.
+- 데이터를 내부에서 사용될 형태로 변경합니다.
+- 누락되거나 이상값을 가질 경우 처리방침을 정하고 구현합니다.
+- 어떻게던 **하나의 상호가 중복 생성되지 않아야 합니다.**
+- 스케쥴러를 설정하여 데이터 파이프라인 로직을 지정한 시간마다 실행시킵니다.
+
+# **계획 (Plan)**
+#### 작업 순서 정리
+1. 데이터 분석 및 전처리 사항 정리
+2. Spring batch 패키지 구조 설계
+3. Step 01. API 응답 받아 row_seoul_restaurant 에 저장
+4. Step 02. row_seoul_restaurant에 저장된 데이터 실제 운영 테이블인 restaurant 에 저장
+5. 스케줄러 작업 처리
+
+
+#### Step 1. 로우데이터 저장 로직
+    
+    1️⃣ Open API로 데이터를 요청
+    
+    - 한번의 요청으로 최대 1,000개의 데이터를 받아올 수 있기 때문에 1,000개씩 데이터를 불러와 캐시합니다. (HTTP 요청 최소화)
+    - HTTP 요청 중 에러가 발생하면 재시도 로직을 구현합니다. (네트워크 문제일 경우, 재시도 시 성공할 수 있기 때문)
+    
+    2️⃣ 응답 데이터의 해시값을 통해 기존 데이터에서 변경이 된 데이터만 필터링
+    
+    - 응답 데이터와 기존 데이터는 관리번호(unique)로 매핑합니다.
+    - 변경된 데이터만 삽입/수정하여 효율성 ↑
+    
+    3️⃣ 로우 데이터 저장 (해시값을 다시 생성하지 않도록 해시값도 함께 저장)
+#### Step 2. 로우데이터 전처리 로직
+    1️⃣ 지번 주소, 도로명 주소 개별 유효성 검사
+    
+    2️⃣ 상호명과 주소 기반 restaurant 객체 있다면 불러오기
+    
+    3️⃣ 폐업인 경우 존재한다면 삭제/ 존재하지 않았다면 저장 X
+    
+    4️⃣ 업태구분 설정[한식, 중식, 양식, 일식, 카페, 술집, 기타, None]
+    
+    5️⃣ 시군구 주소에서 `do-si`, `sgg` contain 검사 및 매핑
+    
+    6️⃣ 위,경도: `null`인 경우, 시군구 주소에서 위,경도 가져오기
+    
+#### 플로우 차트
+    
+  ```mermaid
+     graph TD
+        A[새벽 2시 스케줄러 실행] --> B[SeoulDataPiplineJob 에서 정해진 Step 실행]
+        B --> C[Step 1_1. RowSeoulDataApiReader]
+        C --> H{서울시 맛집 API 요청}
+        H --> |응답 성공| D[Step 1_2. RowSeoulDataProcessor]
+        H --> |응답 실패| I[RestClientException 에러 반환]
+        D -->|해시값 비교 기반 변경 발생 객체 넘기기| E[Step 1_3. RowSeoulDataWriter]
+        E -->|변경한 객체 row_seoul_restaurant 에 저장| F[Step 2_1. RowSeoulDataDBReader]
+        F -->|row_seoul_restaurant 에서 데이터 읽어서 넘기기| G[Step 2_2. SeoulDataProcessor]
+        G --> J{전처리 진행}
+        J--> |전처리 성공| K[Step_2_3. SeoulDataWriter]
+        J--> |전처리 실패| L[에러 로그 찍고 해당 객체 처리 X]
+        K-->|전처리된 객체 restaurant에 저장| M[Job 실행 완료]
+        
+```
+#### 시퀀스 다이어그램
+    
+ ```mermaid
+    sequenceDiagram
+        participant Schedular
+        participant SeoulDataPiplineJob
+        participant Step 01
+        participant 서울시 맛집 api
+        participant row Table
+        participant Step 02
+        participant system Table
+    
+        Schedular->>SeoulDataPiplineJob: 매일 새벽 2시마다 job 실행 요청
+        SeoulDataPiplineJob->>Step 01: 실행 요청
+        Step 01->>서울시 맛집 api: 호출 요청
+        서울시 맛집 api->>Step 01: 응답 반환
+        Step 01->> row Table: hash 비교 후, 업데이트된 데이터 저장
+        Step 02->> row Table: 오늘 업데이트된 데이터 요청
+        row Table->> Step 02: 요청한 데이터 반환
+        Step 02->> system Table: 전처리된 데이터 저장
+        
+          
+```
+
+### 고민했던 점
+
+  
+<details> 
+<summary>🌐 데이터 호출 작업 시 사용할 외부 API 요청 방법</summary>
+    
+    Spring에서 HTTP 엔드포인트에 대한 호출을 위해 총 4가지의 선택지를 제공합니다.
+    
+    **(1) Spring Cloud OpenFeign**
+    
+    Spring MVC 애너테이션을 통해 동적으로 구현체를 만들어 줍니다. 사용이 쉽지만, 커스텀이 어렵고 공식적으로 업데이트가 중단되었습니다. (cf. [공식문서](https://spring.io/projects/spring-cloud-openfeign))
+    
+    **(2) RestTemplate** 
+    
+    템플릿 메서드 API를 제공한는 동기 클라이언트입니다. 스프링에서는 공식적으로 RestTemplate보다 RestClient, WebClient 사용을 권장하고 있습니다. (cf. [공식문서](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-resttemplate))
+    
+    **(3) RestClient**
+    
+    최신 HTTP 요청 API를 제공하는 동기 클라이언트입니다. (cf. [공식문서](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-restclient))
+    
+    **(4) WebClient**
+    
+    비동기, 반응형 HTTP 요청을 제공하는 클라이언트 입니다. 동기 방식도 지원합니다. (cf. [공식문서](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html#rest-webclient))
+    
+    위의 특징들을 고려해 봤을 때, Spring에서 권장하는 **RestClient**와 **WebClient**를 고민하였습니다. WebClient의 경우 Spring WebFlux에 대한 의존이 필요하고, 비동기 사용을 위해서는 러닝커브가 높기 때문에, RestClient를 도입하였고 추후 비동기 처리를 고려하기로 결정했습니다.
+</details> 
+<details> 
+<summary>⏰ 스케줄러 라이브러리 중 Spring boot Scheduling 사용 이유</summary>
+    
+    Spring에서 스케줄링을 위해 총 3가지의 선택지를 제공합니다.
+    
+    **(1) Quartz Scheduler**
+    
+    오픈 소스의 고급 스케줄링 라이브러리로, Java 기반의 복잡한 스케줄링 작업을 지원합니다. 트리거, 잡, 작업 스케줄링 관리 기능을 강력하게 제공합니다.
+    
+    **(2)  Spring TaskScheduler**
+    Spring Core의 `TaskExecutor`를 기반으로 한 기본적인 스케줄링 기능을 제공합니다. 주로 간단한 스케줄링 작업에 사용됩니다. 설정이 매우 쉽고 빠르게 적용이 가능하며 다양한 스케줄링 옵션이 있습니다.
+    
+    **(3) Spring Boot Scheduling**
+    `Spring TaskScheduler`의 확장된 버전으로, 간단하게 스케줄링 작업을 설정할 수 있는 Spring Boot 내장 스케줄링 기능입니다. 러닝 커브가 짧고, 스프링과 완벽한 통합을 이루고 있습니다.
+    
+    복잡한 트리거 규칙이나 분산 시스템이 아니기에 러닝커브가 있는 Quartz 보다 간편하게 사용할 수 있는 Spring TaskScheduler와 Spring Scheduling 중에서 보다 간편한 사용이 가능하도록 확장된 버전인 Spring Scheduling으로 선택하게 되었습니다.
+</details>  
+<details> 
+<summary>⏰ 스케줄러 시간대 설정 이유</summary>
+    
+    데이터 분석을 통해 `서울시 일반음식점 인허가 정보 API` 의 업데이트가 주로 23:59 에 이루어진다는 것을 파악하였습니다. 이에 해당 서버에서 데이터 업데이트가 맞게 이루어진 뒤, 트래픽이 조금 덜 몰릴 새벽 시간대에 작업을 진행하는 것으로 설정하였습니다.
+</details>
+
+
+# **마일스톤 (Milestones)**
+
+> `~ 8/28(수)` : 데이터 분석 및 전처리 방식 논의
+> 
+> `~ 8/30(금)`: 스프링 배치 스터디
+> 
+> `~ 9/3(화)`: 기능 구현 완료
+> 
+> `~ 9/6(금)`: 리드미 작성 및 Rollout
+> 
+</details>
 
 ## Skills
 
