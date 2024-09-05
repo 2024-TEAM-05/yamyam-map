@@ -26,7 +26,7 @@ public class RowSeoulDataDbReader implements ItemReader<RowSeoulRestaurant> {
 	 * 참고) 서울 음식점 관련 데이터 파이프라인은 하루에 딱 1번 발생
 	 */
 	public RowSeoulDataDbReader(RowSeoulRestaurantRepository billingDataRepository,
-		@Value("#{jobParameters['data']}") LocalDate date) {
+		@Value("#{jobParameters['date']}") LocalDate date) {
 		this.restaurantRepository = billingDataRepository;
 		List<RowSeoulRestaurant> billingDataList = restaurantRepository.findAllByUpdatedAt(date);
 		this.rowSeoulRestaurantIterator = billingDataList.iterator();

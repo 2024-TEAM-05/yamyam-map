@@ -5,11 +5,13 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import oz.yamyam_map.batch.domain.RowSeoulRestaurant;
 import oz.yamyam_map.batch.repository.RowSeoulRestaurantRepository;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class RowSeoulDataWriter implements ItemWriter<RowSeoulRestaurant> {
 
 	private final RowSeoulRestaurantRepository rowSeoulRestaurantRepository;
@@ -19,6 +21,7 @@ public class RowSeoulDataWriter implements ItemWriter<RowSeoulRestaurant> {
 	 */
 	@Override
 	public void write(Chunk<? extends RowSeoulRestaurant> chunk) {
-		rowSeoulRestaurantRepository.saveAll(chunk);
+		rowSeoulRestaurantRepository.saveAllInBatch(chunk);
+		log.info("{} 개의 데이터를 ROW 테이블에 저장했습니다...", chunk.size());
 	}
 }

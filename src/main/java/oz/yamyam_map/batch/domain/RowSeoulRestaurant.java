@@ -8,9 +8,11 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import oz.yamyam_map.batch.dto.SeoulRestaurantDto;
+import oz.yamyam_map.batch.util.HashUtils;
 import oz.yamyam_map.common.entity.BaseEntity;
 
 /**
@@ -24,6 +26,7 @@ import oz.yamyam_map.common.entity.BaseEntity;
 @Builder(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class RowSeoulRestaurant extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,10 +121,20 @@ public class RowSeoulRestaurant extends BaseEntity {
 
 	private String homepage; // 홈페이지
 
+	@EqualsAndHashCode.Include
 	private String hash; // 변경 감지를 위한 해시값
 
 	public static RowSeoulRestaurant of(SeoulRestaurantDto dto) {
+		return buildFromDto(dto);
+	}
+
+	public RowSeoulRestaurant update(SeoulRestaurantDto dto) {
+		return buildFromDto(this.id, dto);
+	}
+
+	private static RowSeoulRestaurant buildFromDto(Long id, SeoulRestaurantDto dto) {
 		return RowSeoulRestaurant.builder()
+			.id(id)
 			.opnsfteamcode(dto.opnsfteamcode())
 			.mgtno(dto.mgtno())
 			.apvpermymd(dto.apvpermymd())
@@ -166,12 +179,14 @@ public class RowSeoulRestaurant extends BaseEntity {
 			.jtupsoasgnno(dto.jtupsoasgnno())
 			.jtupsomainedf(dto.jtupsomainedf())
 			.homepage(dto.homepage())
-			.hash(calculateHash())
 			.build();
 	}
 
-	private static String calculateHash() {
-		// TODO: SeoulRestaurantDto의 모든 필드에 대한 해시값 구하기
-		return null;
+	private static RowSeoulRestaurant buildFromDto(SeoulRestaurantDto dto) {
+		return buildFromDto(null, dto);
+	}
+
+	private static String calculateHash(SeoulRestaurantDto record) {
+		return HashUtils.sha256FromObject(record);
 	}
 }
