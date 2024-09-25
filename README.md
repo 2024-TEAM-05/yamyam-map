@@ -8,7 +8,9 @@
 - [ERD](#erd)
 - [API 명세서](#api-명세서)
 - [프로젝트 진행 및 이슈 관리](#프로젝트-진행-및-이슈-관리)
+- [회고](#회고)
 - [Authors](#authors)
+
 
 ## 개요
 
@@ -782,6 +784,16 @@ http://15.165.229.23:8080/swagger-ui/index.html
 - 각 기능별 이슈 작성 후 하위 이슈 추가
 
 <img width="1455" alt="스크린샷 2024-08-26 18 06 58 (1)" src="https://github.com/user-attachments/assets/2e487a73-f92e-413c-a85d-4de06553a20c">
+
+## 회고
+<details> 
+<summary>조혜온</summary>
+  - 공공데이터를 활용한 프로젝트라서 신기했습니다. 팀원분들과의 리뷰가 유익한 시간이였습니다. 짧은 기간이였지만 팀워크가 좋아서 무리없이 진행될 수 있었던 것 같습니다.     
+
+</details>  
+
+
+
 
 ## Authors
 
